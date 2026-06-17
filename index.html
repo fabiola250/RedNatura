@@ -19,6 +19,7 @@
         <li><a href="#productos">Productos</a></li>
         <li><a href="#sucursales">Sucursales</a></li>
         <li><a href="#contacto">Contacto</a></li>
+        <li><a href="#" onclick="toggleChat(); return false;" class="help-link">❓ Ayuda</a></li>
       </ul>
     </div>
   </nav>
@@ -91,7 +92,7 @@
   <section id="sucursales" class="sucursales">
     <div class="container">
       <h2>Nuestras Sucursales</h2>
-      <p>Visítanos en las mejores ubicaciones</p>
+      <p>Visítanos en las mejores ubicaciones de toda México</p>
       <div id="sucursales-grid" class="sucursales-grid"></div>
     </div>
   </section>
@@ -104,18 +105,18 @@
       <div class="contacto-info">
         <div class="info-item">
           <span class="icon">📱</span>
-          <h3>Teléfono</h3>
-          <p><a href="tel:5555070734">555-507-0734</a></p>
+          <h3>WhatsApp</h3>
+          <p><a href="https://wa.me/5551234567?text=Estoy%20interesado%20en%20RedNatura" target="_blank">💬 Contactar</a></p>
         </div>
         <div class="info-item">
           <span class="icon">✉️</span>
           <h3>Email</h3>
-          <p><a href="mailto:fabiola250204@gmail.com">fabiola250204@gmail.com</a></p>
+          <p><a href="mailto:fabiola250204@gmail.com?subject=Consulta RedNatura">📧 fabiola250204@gmail.com</a></p>
         </div>
         <div class="info-item">
           <span class="icon">💬</span>
           <h3>Chat</h3>
-          <p><button class="chat-link-btn" onclick="toggleChat()">Habla con nuestro asistente</button></p>
+          <p><button class="chat-link-btn" onclick="toggleChat()">🤖 Asistente IA</button></p>
         </div>
       </div>
     </div>
@@ -141,10 +142,61 @@
 
   <button class="chat-toggle" onclick="toggleChat()" title="Abrir chat">💬</button>
 
+  <!-- Modal de Registro -->
+  <div id="registro-modal" class="modal hidden">
+    <div class="modal-content">
+      <button class="close-modal" onclick="cerrarRegistro()">×</button>
+      <h2>Registro de Interés</h2>
+      <form id="registro-form" onsubmit="enviarRegistro(event)">
+        <input type="text" id="nombre" placeholder="Nombre completo" required>
+        <input type="tel" id="celular" placeholder="Celular" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="text" id="nacimiento" placeholder="Lugar de nacimiento" required>
+        <input type="date" id="fecha-nacimiento" placeholder="Fecha de nacimiento" required>
+        <textarea id="mensaje" placeholder="Mensaje (opcional)" rows="3"></textarea>
+        <button type="submit" class="btn-submit">Enviar Solicitud</button>
+      </form>
+    </div>
+  </div>
+
   <!-- Scripts -->
   <script src="js/productos.js"></script>
   <script src="js/sucursales.js"></script>
   <script src="js/app.js"></script>
   <script src="js/chatbot.js"></script>
+  <script>
+    function cerrarRegistro() {
+      const modal = document.getElementById('registro-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('show');
+    }
+
+    function enviarRegistro(event) {
+      event.preventDefault();
+      
+      const datos = {
+        tipo: document.getElementById('registro-modal').getAttribute('data-tipo') || 'general',
+        nombre: document.getElementById('nombre').value,
+        celular: document.getElementById('celular').value,
+        email: document.getElementById('email').value,
+        nacimiento: document.getElementById('nacimiento').value,
+        fechaNacimiento: document.getElementById('fecha-nacimiento').value,
+        mensaje: document.getElementById('mensaje').value,
+        fecha: new Date().toLocaleString('es-MX')
+      };
+
+      // Guardar en localStorage
+      let registros = JSON.parse(localStorage.getItem('registrosRedNatura') || '[]');
+      registros.push(datos);
+      localStorage.setItem('registrosRedNatura', JSON.stringify(registros));
+
+      // Enviar email (simular)
+      console.log('Datos para enviar:', datos);
+      alert(`¡Gracias ${datos.nombre}! Tu registro ha sido enviado.\nNos contactaremos al ${datos.celular}`);
+      
+      document.getElementById('registro-form').reset();
+      cerrarRegistro();
+    }
+  </script>
 </body>
 </html>
