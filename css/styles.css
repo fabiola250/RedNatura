@@ -44,8 +44,6 @@ body {
     opacity: 0.9;
 }
 
-
-
 .nav-links {
     display: flex;
     list-style: none;
@@ -63,50 +61,55 @@ body {
     opacity: 0.8;
 }
 
-.chat-btn {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    padding: 0.7rem 1.5rem;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
-}
-
-.chat-btn:hover {
-    background-color: #2980b9;
-}
-
 /* Hero Section */
 .hero {
     background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
     color: white;
-    padding: 100px 20px;
-    text-align: center;
-    min-height: 500px;
+    padding: 80px 20px;
+    min-height: 550px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.hero-content h1 {
+.hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero-text h1 {
     font-size: 3rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
-.hero-content p {
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
+.hero-text p {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
     opacity: 0.95;
 }
 
-.hero-content .subtitulo {
-    font-size: 1.05rem;
-    max-width: 700px;
-    margin: 1rem auto 2rem;
+.hero-text .subtitulo {
+    font-size: 1rem;
+    margin: 1.5rem 0 2rem;
     opacity: 0.9;
+    line-height: 1.8;
+}
+
+.hero-image {
+    text-align: center;
+}
+
+.welcome-img {
+    max-width: 100%;
+    height: auto;
+    max-height: 400px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
 .cta-btn {
@@ -128,10 +131,61 @@ body {
     box-shadow: 0 6px 20px rgba(0,0,0,0.3);
 }
 
+/* Sección Conócenos */
+.conocenos {
+    padding: 80px 20px;
+    background-color: white;
+}
+
+.conocenos-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.conocenos-image {
+    text-align: center;
+}
+
+.brand-img {
+    max-width: 100%;
+    height: auto;
+    max-height: 350px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.conocenos-text h2 {
+    font-size: 2.5rem;
+    color: #2c3e7f;
+    margin-bottom: 1.5rem;
+}
+
+.conocenos-text p {
+    color: #666;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+.beneficios-list {
+    list-style: none;
+    padding: 0;
+}
+
+.beneficios-list li {
+    color: #2c3e7f;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+}
+
 /* Sección Productos */
 .productos {
-    padding: 60px 20px;
-    background-color: white;
+    padding: 80px 20px;
+    background-color: #f8f9fa;
 }
 
 .productos h2 {
@@ -144,7 +198,7 @@ body {
 .productos .descripcion {
     text-align: center;
     color: #666;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
     font-size: 1.1rem;
 }
 
@@ -175,57 +229,90 @@ body {
 
 .productos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 2rem;
 }
 
 .producto-card {
     background: white;
     border: 1px solid #e0e0e0;
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 1.5rem;
     text-align: center;
     transition: all 0.3s;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
 }
 
 .producto-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
     border-color: #3498db;
 }
 
-.producto-card .emoji {
-    font-size: 3rem;
+.producto-card .producto-imagen-container {
+    width: 100%;
+    height: 180px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.producto-card .emoji {
+    font-size: 4rem;
+}
+
+.producto-card img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
 }
 
 .producto-card h3 {
     color: #2c3e7f;
     margin-bottom: 0.5rem;
+    font-size: 1.1rem;
 }
 
 .producto-card p {
     color: #666;
     font-size: 0.9rem;
     margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+.producto-info {
+    margin: 1rem 0;
 }
 
 .precio {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: bold;
     color: #3498db;
-    margin: 1rem 0;
+    margin: 0.5rem 0;
+}
+
+.precio-descuento {
+    font-size: 0.9rem;
+    color: #27ae60;
+    font-weight: bold;
 }
 
 .btn-producto {
     background-color: #3498db;
     color: white;
     border: none;
-    padding: 0.7rem 1.5rem;
+    padding: 0.8rem 1.5rem;
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s;
+    font-weight: 600;
+    margin-top: auto;
 }
 
 .btn-producto:hover {
@@ -235,7 +322,7 @@ body {
 
 /* Sección Sucursales */
 .sucursales {
-    padding: 60px 20px;
+    padding: 80px 20px;
     background: linear-gradient(135deg, #f8f9fa 0%, #ecf0f1 100%);
 }
 
@@ -249,56 +336,52 @@ body {
 .sucursales > .container > p {
     text-align: center;
     color: #666;
-    margin-bottom: 2rem;
-}
-
-.horario {
-    text-align: center;
-    color: #3498db;
-    font-weight: bold;
-    margin-bottom: 2rem !important;
+    margin-bottom: 3rem;
+    font-size: 1.1rem;
 }
 
 .sucursales-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 2rem;
 }
 
 .sucursal-card {
     background: white;
-    border-left: 4px solid #3498db;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-left: 5px solid #3498db;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
     transition: all 0.3s;
 }
 
 .sucursal-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
 .sucursal-card h3 {
     color: #2c3e7f;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
 }
 
 .sucursal-card p {
     color: #666;
-    margin: 0.5rem 0;
+    margin: 0.8rem 0;
+    line-height: 1.6;
 }
 
 /* Sección Contacto */
 .contacto {
-    padding: 60px 20px;
+    padding: 80px 20px;
     background-color: white;
 }
 
 .contacto h2 {
     text-align: center;
     font-size: 2.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     color: #2c3e7f;
 }
 
@@ -306,11 +389,12 @@ body {
     text-align: center;
     color: #666;
     margin-bottom: 3rem;
+    font-size: 1.1rem;
 }
 
 .contacto-info {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 2rem;
     max-width: 1000px;
     margin: 0 auto;
@@ -318,14 +402,16 @@ body {
 
 .info-item {
     text-align: center;
-    padding: 2rem;
+    padding: 2.5rem;
     background: linear-gradient(135deg, #f8f9fa 0%, #ecf0f1 100%);
-    border-radius: 10px;
+    border-radius: 12px;
     transition: all 0.3s;
+    border: 1px solid #e0e0e0;
 }
 
 .info-item:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transform: translateY(-3px);
 }
 
 .info-item .icon {
@@ -334,13 +420,69 @@ body {
     margin-bottom: 1rem;
 }
 
-/* Chatbot */
-.chatbot-container {
+.info-item h3 {
+    color: #2c3e7f;
+    margin-bottom: 0.5rem;
+}
+
+.info-item a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.info-item a:hover {
+    color: #2980b9;
+}
+
+.chat-link-btn {
+    background: none;
+    border: none;
+    color: #3498db;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: 600;
+    transition: color 0.3s;
+    font-size: 1rem;
+    padding: 0;
+}
+
+.chat-link-btn:hover {
+    color: #2980b9;
+}
+
+/* Chat Toggle Button */
+.chat-toggle {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 350px;
-    height: 500px;
+    width: 60px;
+    height: 60px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.8rem;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    transition: all 0.3s;
+    z-index: 999;
+}
+
+.chat-toggle:hover {
+    background-color: #2980b9;
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+/* Chatbot */
+.chatbot-container {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 380px;
+    height: 550px;
     background: white;
     border-radius: 15px;
     box-shadow: 0 5px 40px rgba(0,0,0,0.3);
@@ -388,9 +530,15 @@ body {
     background: none;
     border: none;
     color: white;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     cursor: pointer;
     transition: transform 0.3s;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .close-btn:hover {
@@ -480,6 +628,7 @@ body {
     height: 100%;
     background-color: rgba(0,0,0,0.5);
     animation: fadeIn 0.3s;
+    overflow-y: auto;
 }
 
 .modal.show {
@@ -499,53 +648,114 @@ body {
 
 .modal-content {
     background-color: white;
-    padding: 2rem;
-    border-radius: 10px;
+    padding: 2.5rem;
+    border-radius: 12px;
     width: 90%;
-    max-width: 500px;
+    max-width: 800px;
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
+    margin: auto;
 }
 
 .modal-content.producto-detail {
-    max-width: 700px;
+    max-width: 900px;
+}
+
+.product-detail-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+.product-detail-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.product-detail-image img {
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+}
+
+.product-detail-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.producto-imagen {
+    width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    padding: 1rem;
+}
+
+.modal-content h2 {
+    color: #2c3e7f;
+    margin-bottom: 1rem;
+}
+
+.modal-content h3 {
+    color: #2c3e7f;
+    margin-top: 1.5rem;
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+}
+
+.modal-content ul {
+    list-style-position: inside;
+    color: #666;
+}
+
+.modal-content ul li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
 }
 
 .close-modal {
     position: absolute;
-    right: 1rem;
-    top: 1rem;
+    right: 1.5rem;
+    top: 1.5rem;
     font-size: 2rem;
     cursor: pointer;
     color: #999;
     transition: color 0.3s;
+    border: none;
+    background: none;
 }
 
 .close-modal:hover {
     color: #333;
 }
 
-.modal-content h2 {
-    color: #2c3e7f;
-    margin-bottom: 1.5rem;
-}
-
 .modal-content form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    margin-top: 1.5rem;
 }
 
-.modal-content input {
+.modal-content input,
+.modal-content textarea {
     padding: 0.8rem;
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 1rem;
     outline: none;
+    font-family: inherit;
 }
 
-.modal-content input:focus {
+.modal-content input:focus,
+.modal-content textarea:focus {
     border-color: #3498db;
     box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
 }
@@ -565,73 +775,124 @@ body {
     background-color: #2980b9;
 }
 
+.discount-badge {
+    background-color: #e74c3c;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: bold;
+    display: inline-block;
+    margin: 0.5rem 0;
+}
+
 /* Footer */
 .footer {
     background: linear-gradient(135deg, #2c3e7f 0%, #1a4d8f 100%);
     color: white;
     text-align: center;
-    padding: 2rem;
+    padding: 2.5rem;
     margin-top: 3rem;
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+    .hero-content {
+        grid-template-columns: 1fr;
+    }
+
+    .conocenos-content {
+        grid-template-columns: 1fr;
+    }
+
+    .product-detail-container {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 768px) {
-    .hero-content h1 {
+    .hero-text h1 {
         font-size: 2rem;
     }
-    
+
     .productos h2,
     .sucursales h2,
     .contacto h2 {
         font-size: 1.8rem;
     }
-    
+
     .nav-links {
         gap: 1rem;
         font-size: 0.9rem;
     }
-    
-    .chatbot-container {
-        width: 100%;
-        height: 100%;
-        right: 0;
-        bottom: 0;
-        border-radius: 0;
+
+    .productos-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 1.5rem;
     }
-    
+
+    .chatbot-container {
+        width: calc(100% - 40px);
+        height: 100%;
+        right: 20px;
+        bottom: 20px;
+        border-radius: 0;
+        max-height: 500px;
+    }
+
+    .chat-toggle {
+        bottom: 20px;
+        right: 20px;
+    }
+
     .modal-content {
         width: 95%;
         padding: 1.5rem;
     }
-    .producto-imagen {
-    width: 100%;
-    height: 220px;
-    object-fit: contain;
-    margin-bottom: 1rem;
-    border-radius: 10px;
-    background-color: #fff;
+
+    .filtros {
+        gap: 0.5rem;
+    }
+
+    .filtro-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
 }
 
-.options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 1rem;
-}
+@media (max-width: 480px) {
+    .logo h1 {
+        font-size: 1.3rem;
+    }
 
-.options button {
-    background-color: #2c3e7f;
-    color: white;
-    border: none;
-    padding: 0.5rem 0.9rem;
-    border-radius: 18px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    transition: background-color 0.3s;
-}
+    .logo p {
+        font-size: 0.7rem;
+    }
 
-.options button:hover {
-    background-color: #1a4d8f;
-}
+    .hero-text h1 {
+        font-size: 1.5rem;
+    }
 
+    .hero-text p {
+        font-size: 1rem;
+    }
+
+    .hero {
+        padding: 40px 20px;
+        min-height: auto;
+    }
+
+    .productos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .filtro-btn {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.75rem;
+    }
 }

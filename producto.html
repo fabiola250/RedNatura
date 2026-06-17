@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Detalle del Producto</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle del Producto - RedNatura</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -10,10 +11,11 @@
   <nav class="navbar">
     <div class="container">
       <div class="logo">
-        <h1>RedNatura</h1>
+        <h1>🌿 RedNatura</h1>
         <p>Suplementos alimenticios naturales</p>
       </div>
       <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
         <li><a href="index.html#productos">Productos</a></li>
         <li><a href="index.html#sucursales">Sucursales</a></li>
         <li><a href="index.html#contacto">Contacto</a></li>
@@ -30,11 +32,47 @@
 
   <!-- Footer -->
   <footer class="footer">
-    <p>© 2026 RedNatura - Todos los derechos reservados</p>
+    <p>© 2026 RedNatura - Todos los derechos reservados | Representante: Fabiola</p>
   </footer>
+
+  <!-- Chatbot -->
+  <div id="chatbot" class="chatbot-container hidden">
+    <div class="chatbot-header">
+      <h3>🤖 Asistente RedNatura</h3>
+      <button class="close-btn" onclick="toggleChat()">×</button>
+    </div>
+    <div id="chat-messages" class="chat-messages"></div>
+    <div class="chat-input-area">
+      <input id="chat-input" type="text" placeholder="Escribe aquí..." onkeypress="handleChatInput(event)">
+      <button onclick="sendMessage()">Enviar</button>
+    </div>
+  </div>
+
+  <button class="chat-toggle" onclick="toggleChat()" title="Abrir chat">💬</button>
+
+  <!-- Modal de registro/contacto -->
+  <div id="registro-modal" class="modal hidden">
+    <div class="modal-content">
+      <button class="close-modal" onclick="cerrarRegistro()">×</button>
+      <h2>¡Estoy Interesado!</h2>
+      <p>Completa tus datos y nos pondremos en contacto</p>
+      <form id="registro-form" onsubmit="enviarRegistro(event)">
+        <input type="text" id="nombre" placeholder="Nombre" required>
+        <input type="text" id="apellido-paterno" placeholder="Apellido paterno" required>
+        <input type="text" id="apellido-materno" placeholder="Apellido materno" required>
+        <input type="tel" id="celular" placeholder="Teléfono" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="text" id="nacimiento" placeholder="Lugar de nacimiento" required>
+        <input type="date" id="fecha-nacimiento" placeholder="Fecha de nacimiento" required>
+        <textarea id="mensaje" placeholder="Mensaje (opcional)" rows="3"></textarea>
+        <button type="submit" class="btn-submit">Enviar Solicitud</button>
+      </form>
+    </div>
+  </div>
 
   <!-- Scripts -->
   <script src="js/productos.js"></script>
+  <script src="js/chatbot.js"></script>
   <script>
     // Obtener el ID desde la URL
     const params = new URLSearchParams(window.location.search);
@@ -44,60 +82,131 @@
     const detalleDiv = document.getElementById("producto-detalle");
 
     if (prod) {
-      const imagenSrc = prod.imagen || ("img/" + prod.nombre.toLowerCase().replace(/[^a-z0-9]+/gi,"-") + ".jpg");
+      // Calcular descuento
+      const precio = parseInt(prod.precio.replace(/[^0-9]/g, ''));
+      const tieneDescuento = precio > 350;
+      const precioDescuento = tieneDescuento ? Math.round(precio * 0.7) : null;
+
+      // Generar nombre de imagen
+      const imagenSrc = `img/${prod.nombre.toLowerCase().replace(/[^a-z0-9]+/gi, '-')}.jpg`;
+      const emojiCategoria = obtenerEmojiCategoria(prod.categoria);
 
       detalleDiv.innerHTML = `
-        <h2>${prod.nombre}</h2>
-        <img src="${imagenSrc}" alt="${prod.nombre}" class="producto-imagen">
-        <p><strong>Presentación:</strong> ${prod.presentacion}</p>
-        <p>${prod.descripcionLarga || prod.descripcion}</p>
+        <button class="close-modal" onclick="history.back()">×</button>
+        
+        <div class="product-detail-container">
+          <div class="product-detail-image">
+            <div style="text-align: center;">
+              <div style="font-size: 5rem; margin-bottom: 1rem;">${emojiCategoria}</div>
+              <img src="${imagenSrc}" alt="${prod.nombre}" class="producto-imagen" onerror="this.style.display='none'">
+            </div>
+          </div>
 
-        <h3>Ingredientes</h3>
-        <ul>${prod.ingredientes.map(i => `<li>${i}</li>`).join("")}</ul>
+          <div class="product-detail-info">
+            <h2>${prod.nombre}</h2>
+            
+            <p><strong>Categoría:</strong> ${prod.categoria}</p>
+            <p><strong>Presentación:</strong> ${prod.presentacion}</p>
 
-        <h3>Beneficios</h3>
-        <ul>${prod.beneficios.map(b => `<li>${b}</li>`).join("")}</ul>
+            <div style="margin: 1.5rem 0; padding: 1rem; background-color: #f8f9fa; border-radius: 8px; border-left: 4px solid #3498db;">
+              <p style="font-size: 1.3rem; font-weight: bold; color: #3498db;">Precio: $${prod.precio}</p>
+              ${tieneDescuento ? `
+                <p style="color: #27ae60; font-size: 1.1rem; font-weight: bold;">
+                  💚 CON DESCUENTO 30%: <span style="color: #e74c3c;">$${precioDescuento}</span>
+                </p>
+              ` : ''}
+            </div>
 
-        <h3>Modo de uso</h3>
-        <p>${prod.modoUso}</p>
+            <p>${prod.descripcionLarga || prod.descripcion}</p>
 
-        <p class="precio"><strong>Precio:</strong> ${prod.precio}</p>
-        <button class="btn-producto" onclick="abrirRegistro()">Comprar</button>
+            <h3>🌿 Modo de Uso</h3>
+            <p>${prod.modoUso}</p>
+
+            <button class="btn-producto" style="width: 100%; padding: 1rem; font-size: 1.1rem; margin-top: 1.5rem;" onclick="abrirRegistro()">
+              ❤️ Estoy Interesado
+            </button>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 2rem;">🥗 Ingredientes</h3>
+        <ul>
+          ${prod.ingredientes.map(i => `<li>${i}</li>`).join("")}
+        </ul>
+
+        <h3 style="margin-top: 2rem;">✨ Beneficios</h3>
+        <ul>
+          ${prod.beneficios.map(b => `<li>${b}</li>`).join("")}
+        </ul>
+
+        <div style="margin-top: 2rem; padding: 1.5rem; background-color: #ecf0f1; border-radius: 8px; text-align: center;">
+          <p><strong>¿Tienes preguntas?</strong></p>
+          <button class="chat-link-btn" onclick="toggleChat(); abrirChatConProducto('${prod.nombre}')" style="font-size: 1rem; padding: 0.5rem 1rem; margin-top: 0.5rem;">
+            💬 Habla con nuestro Asistente
+          </button>
+        </div>
       `;
     } else {
-      detalleDiv.innerHTML = "<p>Producto no encontrado.</p>";
+      detalleDiv.innerHTML = "<p style='text-align: center; padding: 2rem; color: #e74c3c;'><strong>❌ Producto no encontrado.</strong> <a href='index.html' style='color: #3498db;'>Volver a productos</a></p>";
     }
 
+    // Función para abrir el modal de registro
     function abrirRegistro() {
       const modal = document.getElementById('registro-modal');
       modal.classList.remove('hidden');
       modal.classList.add('show');
     }
-  </script>
 
-  <!-- Modal de registro -->
-  <div id="registro-modal" class="modal hidden">
-    <div class="modal-content">
-      <span class="close-modal" onclick="cerrarRegistro()">×</span>
-      <h2>Registro de compra</h2>
-      <form id="registro-form">
-        <input type="text" id="nombre" placeholder="Nombre" required>
-        <input type="text" id="apellido-paterno" placeholder="Apellido paterno" required>
-        <input type="text" id="apellido-materno" placeholder="Apellido materno" required>
-        <input type="tel" id="celular" placeholder="Teléfono" required>
-        <input type="text" id="nacimiento" placeholder="Lugar de nacimiento" required>
-        <input type="date" id="fecha-nacimiento" required>
-        <button type="submit" class="btn-submit">Enviar registro</button>
-      </form>
-    </div>
-  </div>
-
-  <script>
+    // Función para cerrar modal
     function cerrarRegistro() {
       const modal = document.getElementById('registro-modal');
       modal.classList.add('hidden');
       modal.classList.remove('show');
     }
+
+    // Función para enviar registro
+    function enviarRegistro(event) {
+      event.preventDefault();
+      
+      const datos = {
+        nombre: document.getElementById('nombre').value,
+        apellidoPaterno: document.getElementById('apellido-paterno').value,
+        apellidoMaterno: document.getElementById('apellido-materno').value,
+        celular: document.getElementById('celular').value,
+        email: document.getElementById('email').value,
+        nacimiento: document.getElementById('nacimiento').value,
+        fechaNacimiento: document.getElementById('fecha-nacimiento').value,
+        mensaje: document.getElementById('mensaje').value,
+        producto: prod.nombre,
+        precio: prod.precio,
+        fecha: new Date().toLocaleString('es-MX')
+      };
+
+      // Guardar en localStorage para simulación
+      let registros = JSON.parse(localStorage.getItem('registrosRedNatura') || '[]');
+      registros.push(datos);
+      localStorage.setItem('registrosRedNatura', JSON.stringify(registros));
+
+      // Mostrar mensaje de éxito
+      alert(`¡Gracias ${datos.nombre}! 🎉\n\nTu solicitud ha sido registrada.\nNos pondremos en contacto pronto al ${datos.celular}.\n\nProducto: ${datos.producto}`);
+
+      // Limpiar formulario
+      document.getElementById('registro-form').reset();
+      cerrarRegistro();
+    }
+
+    // Función para abrir chat con contexto del producto
+    function abrirChatConProducto(nombreProducto) {
+      const chatInput = document.getElementById('chat-input');
+      chatInput.placeholder = `Pregunta sobre ${nombreProducto}...`;
+      chatInput.focus();
+    }
+
+    // Cerrar modal al presionar Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        cerrarRegistro();
+      }
+    });
   </script>
 </body>
 </html>

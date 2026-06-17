@@ -1,73 +1,81 @@
-// --- Renderizado de productos ---
-function filtrarProductos(filtro, boton = null) {
-  // Quitar la clase activa de todos los botones
-  document.querySelectorAll('.filtro-btn').forEach(btn => btn.classList.remove('active'));
-  if (boton) boton.classList.add('active');
+// Función para filtrar productos
+function filtrarProductos(categoria, btn) {
+    const productosFiltrados = categoria === 'todos' 
+        ? productos 
+        : productos.filter(p => p.categoria === categoria);
 
-  const grid = document.getElementById('productos-grid');
-  grid.innerHTML = '';
+    mostrarProductos(productosFiltrados);
 
-  // Filtrar productos por categoría
-  const productosFiltrados = filtro === 'todos'
-    ? productos
-    : productos.filter(p => p.categoria.toLowerCase() === filtro.toLowerCase());
-
-  // Crear tarjetas de producto
-  productosFiltrados.forEach(producto => {
-    const card = document.createElement('div');
-    card.className = 'producto-card';
-
-    // Si no tiene imagen definida, generar nombre de archivo automático
-    const imagenSrc = producto.imagen || generarImagen(producto.nombre);
-
-    card.innerHTML = `
-      <img src="${imagenSrc}" alt="${producto.nombre}" class="producto-imagen">
-      <h3>${producto.nombre}</h3>
-      <p>${producto.descripcionCorta || producto.descripcion}</p>
-      <div class="precio">${producto.precio}</div>
-      <button class="btn-producto" onclick="verDescripcion(${producto.id})">Ver más detalles</button>
-    `;
-
-    grid.appendChild(card);
-  });
+    // Actualizar botón activo
+    document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
 }
 
-// --- Función para abrir detalle de producto ---
-function verDescripcion(id) {
-  window.location.href = `producto.html?id=${id}`;
+// Función para mostrar productos en grid
+function mostrarProductos(lista) {
+    const grid = document.getElementById('productos-grid');
+    grid.innerHTML = '';
+
+    lista.forEach(producto => {
+        const card = document.createElement('div');
+        card.className = 'producto-card';
+        
+        // Generar nombre de imagen basado en el nombre del producto
+        const imagenSrc = `img/${producto.nombre.toLowerCase().replace(/[^a-z0-9]+/gi, '-')}.jpg`;
+        
+        // Determinar si aplica descuento (productos > $350)
+        const precio = parseInt(producto.precio.replace(/[^0-9]/g, ''));
+        const tieneDescuento = precio > 350;
+        const precioDescuento = tieneDescuento ? Math.round(precio * 0.7) : null;
+
+        const emojiCategoria = obtenerEmojiCategoria(producto.categoria);
+
+        card.innerHTML = `
+            <div class="producto-imagen-container">
+                <span class="emoji">${emojiCategoria}</span>
+            </div>
+            <h3>${producto.nombre}</h3>
+            <p>${producto.descripcionCorta}</p>
+            <div class="producto-info">
+                <p class="precio">$${producto.precio}</p>
+                ${tieneDescuento ? `<p class="precio-descuento">Con descuento: $${precioDescuento} (30% OFF)</p>` : ''}
+            </div>
+            <button class="btn-producto" onclick="irAlDetalle(${producto.id})">Ver Detalles</button>
+        `;
+        
+        grid.appendChild(card);
+    });
 }
 
-// --- Renderizado de sucursales ---
-function renderSucursales() {
-  const grid = document.getElementById('sucursales-grid');
-  if (!grid) return;
-
-  grid.innerHTML = '';
-
-  sucursales.forEach(sucursal => {
-    const card = document.createElement('div');
-    card.className = 'sucursal-card';
-
-    card.innerHTML = `
-      <h3>📍 ${sucursal.ciudad}</h3>
-      <p>${sucursal.estado}</p>
-      <p class="horario">Horario: Lunes a Viernes 9am - 7pm, Sábados 9am - 2pm</p>
-    `;
-
-    grid.appendChild(card);
-  });
+// Función para obtener emoji según categoría
+function obtenerEmojiCategoria(categoria) {
+    const emojis = {
+        'Digestión': '🌿',
+        'Mental': '🧘',
+        'Mujeres': '🌸',
+        'Hombres': '💪',
+        'Niños': '👶',
+        'Belleza': '✨',
+        'Inmunológico': '🛡️',
+        'Desintoxicación': '🌱',
+        'Control de Peso': '🔥',
+        'Energía': '⚡',
+        'Glucosa': '💙',
+        'Urinario': '💧',
+        'Circulación': '❤️',
+        'Antioxidantes': '🍇',
+        'Articulaciones': '🏃'
+    };
+    return emojis[categoria] || '🌿';
 }
 
-// --- Generador automático de nombres de imagen ---
-function generarImagen(nombre) {
-  return "img/" + nombre.toLowerCase()
-    .replace(/[^a-z0-9]+/gi, "-") // reemplaza espacios y caracteres raros por guiones
-    .replace(/-+$/,"")            // quita guiones al final
-    + ".jpg";
+// Función para ir al detalle del producto
+function irAlDetalle(productoId) {
+    window.location.href = `producto.html?id=${productoId}`;
 }
 
-// --- Inicialización al cargar la página ---
-window.addEventListener('DOMContentLoaded', () => {
-  filtrarProductos('todos');
-  renderSucursales();
+// Cargar productos al iniciar
+document.addEventListener('DOMContentLoaded', () => {
+    mostrarProductos(productos);
+    cargarSucursales();
 });
