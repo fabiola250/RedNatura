@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Detalle del Producto</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="logo">
+        <h1>RedNatura</h1>
+        <p>Suplementos alimenticios naturales</p>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html#productos">Productos</a></li>
+        <li><a href="index.html#sucursales">Sucursales</a></li>
+        <li><a href="index.html#contacto">Contacto</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Contenido del producto -->
+  <section class="productos">
+    <div class="container">
+      <div id="producto-detalle" class="modal-content producto-detail"></div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2026 RedNatura - Todos los derechos reservados</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/productos.js"></script>
+  <script>
+    // Obtener el ID desde la URL
+    const params = new URLSearchParams(window.location.search);
+    const id = parseInt(params.get("id"));
+    const prod = productos.find(p => p.id === id);
+
+    const detalleDiv = document.getElementById("producto-detalle");
+
+    if (prod) {
+      const imagenSrc = prod.imagen || ("img/" + prod.nombre.toLowerCase().replace(/[^a-z0-9]+/gi,"-") + ".jpg");
+
+      detalleDiv.innerHTML = `
+        <h2>${prod.nombre}</h2>
+        <img src="${imagenSrc}" alt="${prod.nombre}" class="producto-imagen">
+        <p><strong>Presentación:</strong> ${prod.presentacion}</p>
+        <p>${prod.descripcionLarga || prod.descripcion}</p>
+
+        <h3>Ingredientes</h3>
+        <ul>${prod.ingredientes.map(i => `<li>${i}</li>`).join("")}</ul>
+
+        <h3>Beneficios</h3>
+        <ul>${prod.beneficios.map(b => `<li>${b}</li>`).join("")}</ul>
+
+        <h3>Modo de uso</h3>
+        <p>${prod.modoUso}</p>
+
+        <p class="precio"><strong>Precio:</strong> ${prod.precio}</p>
+        <button class="btn-producto" onclick="abrirRegistro()">Comprar</button>
+      `;
+    } else {
+      detalleDiv.innerHTML = "<p>Producto no encontrado.</p>";
+    }
+
+    function abrirRegistro() {
+      const modal = document.getElementById('registro-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('show');
+    }
+  </script>
+
+  <!-- Modal de registro -->
+  <div id="registro-modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-modal" onclick="cerrarRegistro()">×</span>
+      <h2>Registro de compra</h2>
+      <form id="registro-form">
+        <input type="text" id="nombre" placeholder="Nombre" required>
+        <input type="text" id="apellido-paterno" placeholder="Apellido paterno" required>
+        <input type="text" id="apellido-materno" placeholder="Apellido materno" required>
+        <input type="tel" id="celular" placeholder="Teléfono" required>
+        <input type="text" id="nacimiento" placeholder="Lugar de nacimiento" required>
+        <input type="date" id="fecha-nacimiento" required>
+        <button type="submit" class="btn-submit">Enviar registro</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function cerrarRegistro() {
+      const modal = document.getElementById('registro-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('show');
+    }
+  </script>
+</body>
+</html>
