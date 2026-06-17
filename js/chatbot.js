@@ -1,11 +1,6 @@
 // Respuestas del chatbot
 const respuestasBot = {
-  bienvenida: "¡Hola! Soy el Asistente IA de RedNatura 🤖. Estoy aquí para ayudarte a encontrar el suplemento perfecto. ¿Qué necesitas?",
-  contacto: `📞 **Contáctanos:**
-
-📱 WhatsApp
-💬 Chat
-📧 Email: fabiola250204@gmail.com`
+  bienvenida: "¡Hola! Soy el Asistente IA de RedNatura 🤖. Estoy aquí para ayudarte a encontrar el suplemento perfecto. ¿Qué necesitas?"
 };
 
 let chatMessages = [];
@@ -27,10 +22,26 @@ function sendMessage() {
 
 function obtenerRespuesta(texto) {
   const lower = texto.toLowerCase();
-  const productoEncontrado = productos.find(p => lower.includes(p.nombre.toLowerCase().split(' ')[0]));
+  
+  // Buscar producto específico
+  const productoEncontrado = productos.find(p => 
+    lower.includes(p.nombre.toLowerCase()) ||
+    lower.includes(p.descripcionCorta.toLowerCase())
+  );
+  
   if (productoEncontrado) {
-    return `Encontré **${productoEncontrado.nombre}** - $${productoEncontrado.precio}. ¡Ve a Productos para ver más!`;
+    return `Encontré **${productoEncontrado.nombre}** - $${productoEncontrado.precio.toLocaleString('es-MX')}\n${productoEncontrado.descripcionCorta}\n\n¿Quieres ver más detalles?`;
   }
+  
+  // Palabras clave
+  if (lower.includes('ayuda') || lower.includes('soporte')) {
+    return "¿En qué puedo ayudarte?\n- 🔍 Busca productos por categoría\n- 🏪 Encuentra sucursales cercanas\n- 💳 Consulta precios y promociones";
+  }
+  
+  if (lower.includes('promoción') || lower.includes('descuento') || lower.includes('oferta')) {
+    return "🎁 Tenemos DESCUENTO 30% en productos mayores a $350 al inscribirse. ¡Oferta por tiempo limitado!";
+  }
+  
   return "¿Quieres buscar un producto, encontrar una sucursal o conocer nuestras ofertas?";
 }
 
@@ -89,19 +100,51 @@ function mostrarCategorias() {
   const messagesDiv = document.getElementById('chat-messages');
   const categoriasEl = document.createElement('div');
   categoriasEl.className = 'chat-menu';
-  const categorias = ['Digestión', 'Mental', 'Mujeres', 'Hombres', 'Niños', 'Belleza', 'Inmunológico', 'Energía'];
+  const categorias = ['Digestión', 'Mental', 'Mujeres', 'Hombres', 'Niños', 'Belleza', 'Inmunológico', 'Energía', 'Glucosa', 'Circulación', 'Articulaciones', 'Desintoxicación'];
   categoriasEl.innerHTML = categorias.map(cat => `<button class="menu-btn" onclick="buscarCategoria('${cat}')">${cat}</button>`).join('');
   messagesDiv.appendChild(categoriasEl);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
 function buscarCategoria(categoria) {
-  const total = productos.filter(p => p.categoria === categoria).length;
-  addMessage(`Encontré ${total} productos en ${categoria}. ¡Ve a la sección de Productos!`, 'bot');
-  document.getElementById('productos').scrollIntoView({behavior:'smooth'});
-  setTimeout(() => {
-    filtrarProductos(categoria, document.querySelector('.filtro-btn'));
-  }, 500);
+  const productosCat = productos.filter(p => p.categoria === categoria);
+  const total = productosCat.length;
+  
+  if (total > 0) {
+    addMessage(`Encontré ${total} producto(s) en ${categoria}:`, 'bot');
+    
+    const messagesDiv = document.getElementById('chat-messages');
+    const productosEl = document.createElement('div');
+    productosEl.className = 'chat-menu';
+    productosEl.innerHTML = productosCat.map(p => `<button class="menu-btn" onclick="mostrarProductoChat(${p.id})">${p.nombre}</button>`).join('');
+    messagesDiv.appendChild(productosEl);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  } else {
+    addMessage(`No encontré productos en ${categoria}.`, 'bot');
+  }
+}
+
+function mostrarProductoChat(productoId) {
+  const prod = productos.find(p => p.id === productoId);
+  if (prod) {
+    const precioDesc = prod.precio > 350 ? Math.round(prod.precio * 0.7) : null;
+    let msg = `**${prod.nombre}**\n$${prod.precio.toLocaleString('es-MX')}`;
+    if (precioDesc) {
+      msg += `\n💚 Con 30% DESC: $${precioDesc.toLocaleString('es-MX')}`;
+    }
+    msg += `\n${prod.descripcionCorta}`;
+    addMessage(msg, 'bot');
+    
+    const messagesDiv = document.getElementById('chat-messages');
+    const botonesEl = document.createElement('div');
+    botonesEl.className = 'chat-menu';
+    botonesEl.innerHTML = `
+      <button class="menu-btn" onclick="irAlDetalle(${prod.id})">📄 Ver Detalles</button>
+      <a href="https://wa.me/5551234567?text=Estoy%20interesado%20en%20${encodeURIComponent(prod.nombre)}" target="_blank" class="menu-btn">💬 WhatsApp</a>
+    `;
+    messagesDiv.appendChild(botonesEl);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }
 }
 
 function mostrarFormularioEstado() {
@@ -151,7 +194,7 @@ function abrirModalSucursal(nombreSucursal) {
 }
 
 function mostrarContacto() {
-  addMessage(respuestasBot.contacto, 'bot');
+  addMessage('📞 **Contáctanos:**\n💬 WhatsApp\n📧 Email: fabiola250204@gmail.com', 'bot');
   const messagesDiv = document.getElementById('chat-messages');
   const contactoEl = document.createElement('div');
   contactoEl.className = 'chat-menu';
@@ -164,11 +207,11 @@ function mostrarContacto() {
 }
 
 function mostrarOfertas() {
-  addMessage('🎁 Productos con DESCUENTO 30% (mayores a $350)\n\n¡Ve a la sección de Productos!', 'bot');
+  addMessage('🎁 **DESCUENTO 30% en productos mayores a $350**\n\n✨ OFERTA POR TIEMPO LIMITADO ✨\n\n¡Al inscribirse hoy obtendrás este increíble descuento!\n\nVe a la sección de Productos para verlos.', 'bot');
   const messagesDiv = document.getElementById('chat-messages');
   const ofertasEl = document.createElement('div');
   ofertasEl.className = 'chat-menu';
-  ofertasEl.innerHTML = `<button class="menu-btn" onclick="document.getElementById('productos').scrollIntoView({behavior:'smooth'})">🛍️ Ver Productos</button>`;
+  ofertasEl.innerHTML = `<button class="menu-btn" onclick="document.getElementById('productos').scrollIntoView({behavior:'smooth'}); toggleChat();">🛍️ Ver Productos</button>`;
   messagesDiv.appendChild(ofertasEl);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }

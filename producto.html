@@ -15,10 +15,11 @@
         <p>Suplementos alimenticios naturales</p>
       </div>
       <ul class="nav-links">
-        <li><a href="index.html">Inicio</a></li>
+        <li><a href="index.html#bienvenida">Inicio</a></li>
         <li><a href="index.html#productos">Productos</a></li>
         <li><a href="index.html#sucursales">Sucursales</a></li>
         <li><a href="index.html#contacto">Contacto</a></li>
+        <li><a href="#" onclick="toggleChat(); return false;" class="help-link">❓ Ayuda</a></li>
       </ul>
     </div>
   </nav>
@@ -26,7 +27,7 @@
   <!-- Contenido del producto -->
   <section class="productos">
     <div class="container">
-      <div id="producto-detalle" class="modal-content producto-detail"></div>
+      <div id="producto-detalle" class="producto-detail"></div>
     </div>
   </section>
 
@@ -43,24 +44,21 @@
     </div>
     <div id="chat-messages" class="chat-messages"></div>
     <div class="chat-input-area">
-      <input id="chat-input" type="text" placeholder="Escribe aquí..." onkeypress="handleChatInput(event)">
+      <input id="chat-input" type="text" placeholder="Escribe tu pregunta..." onkeypress="handleChatInput(event)">
       <button onclick="sendMessage()">Enviar</button>
     </div>
   </div>
 
   <button class="chat-toggle" onclick="toggleChat()" title="Abrir chat">💬</button>
 
-  <!-- Modal de registro/contacto -->
+  <!-- Modal de Registro -->
   <div id="registro-modal" class="modal hidden">
     <div class="modal-content">
       <button class="close-modal" onclick="cerrarRegistro()">×</button>
-      <h2>¡Estoy Interesado!</h2>
-      <p>Completa tus datos y nos pondremos en contacto</p>
+      <h2>Registro de Interés</h2>
       <form id="registro-form" onsubmit="enviarRegistro(event)">
-        <input type="text" id="nombre" placeholder="Nombre" required>
-        <input type="text" id="apellido-paterno" placeholder="Apellido paterno" required>
-        <input type="text" id="apellido-materno" placeholder="Apellido materno" required>
-        <input type="tel" id="celular" placeholder="Teléfono" required>
+        <input type="text" id="nombre" placeholder="Nombre completo" required>
+        <input type="tel" id="celular" placeholder="Celular" required>
         <input type="email" id="email" placeholder="Email" required>
         <input type="text" id="nacimiento" placeholder="Lugar de nacimiento" required>
         <input type="date" id="fecha-nacimiento" placeholder="Fecha de nacimiento" required>
@@ -72,6 +70,7 @@
 
   <!-- Scripts -->
   <script src="js/productos.js"></script>
+  <script src="js/sucursales.js"></script>
   <script src="js/chatbot.js"></script>
   <script>
     // Obtener el ID desde la URL
@@ -82,131 +81,105 @@
     const detalleDiv = document.getElementById("producto-detalle");
 
     if (prod) {
-      // Calcular descuento
-      const precio = parseInt(prod.precio.replace(/[^0-9]/g, ''));
-      const tieneDescuento = precio > 350;
-      const precioDescuento = tieneDescuento ? Math.round(precio * 0.7) : null;
-
-      // Generar nombre de imagen
-      const imagenSrc = `img/${prod.nombre.toLowerCase().replace(/[^a-z0-9]+/gi, '-')}.jpg`;
-      const emojiCategoria = obtenerEmojiCategoria(prod.categoria);
+      const tieneDescuento = prod.precio > 350;
+      const precioDescuento = tieneDescuento ? Math.round(prod.precio * 0.7) : null;
 
       detalleDiv.innerHTML = `
-        <button class="close-modal" onclick="history.back()">×</button>
-        
-        <div class="product-detail-container">
-          <div class="product-detail-image">
-            <div style="text-align: center;">
-              <div style="font-size: 5rem; margin-bottom: 1rem;">${emojiCategoria}</div>
-              <img src="${imagenSrc}" alt="${prod.nombre}" class="producto-imagen" onerror="this.style.display='none'">
-            </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;">
+          <!-- Imagen izquierda -->
+          <div style="text-align: center;">
+            <img src="${prod.imagen}" alt="${prod.nombre}" style="max-width: 100%; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
+            ${tieneDescuento ? `<p style="margin-top: 2rem; background: linear-gradient(135deg, #ffd89b 0%, #fff5d0 100%); color: #d84315; padding: 1rem; border-radius: 8px; font-weight: bold; border: 2px solid #ff9800; animation: glow 2s ease-in-out infinite;">✨ OFERTA LIMITADA - ¡AL INSCRIBIRSE HOY OBTENDRÁS 30% DE DESCUENTO! ✨</p>` : ''}
           </div>
 
-          <div class="product-detail-info">
-            <h2>${prod.nombre}</h2>
+          <!-- Detalles derecha -->
+          <div>
+            <h2 style="color: #2c3e7f; margin-bottom: 1rem; font-size: 2.2rem;">${prod.nombre}</h2>
             
-            <p><strong>Categoría:</strong> ${prod.categoria}</p>
-            <p><strong>Presentación:</strong> ${prod.presentacion}</p>
-
-            <div style="margin: 1.5rem 0; padding: 1rem; background-color: #f8f9fa; border-radius: 8px; border-left: 4px solid #3498db;">
-              <p style="font-size: 1.3rem; font-weight: bold; color: #3498db;">Precio: $${prod.precio}</p>
-              ${tieneDescuento ? `
-                <p style="color: #27ae60; font-size: 1.1rem; font-weight: bold;">
-                  💚 CON DESCUENTO 30%: <span style="color: #e74c3c;">$${precioDescuento}</span>
-                </p>
-              ` : ''}
+            <div style="background: #f0f7ff; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+              <p style="font-size: 1.1rem; color: #666; margin-bottom: 1rem;"><strong>Presentación:</strong> ${prod.presentacion}</p>
+              <p style="font-size: 1rem; color: #666; line-height: 1.8;">${prod.descripcionLarga}</p>
             </div>
 
-            <p>${prod.descripcionLarga || prod.descripcion}</p>
+            <div style="margin: 2rem 0;">
+              <h3 style="color: #2c3e7f; margin-bottom: 0.8rem;">💰 Precio</h3>
+              <p style="font-size: 2rem; font-weight: bold; color: #3498db; margin-bottom: 0.5rem;">$${prod.precio.toLocaleString('es-MX')}</p>
+              ${tieneDescuento ? `<p style="font-size: 1.3rem; color: #27ae60; font-weight: bold;">💚 Con 30% DESC: $${precioDescuento.toLocaleString('es-MX')}</p>` : ''}
+            </div>
 
-            <h3>🌿 Modo de Uso</h3>
-            <p>${prod.modoUso}</p>
-
-            <button class="btn-producto" style="width: 100%; padding: 1rem; font-size: 1.1rem; margin-top: 1.5rem;" onclick="abrirRegistro()">
-              ❤️ Estoy Interesado
-            </button>
+            <button class="btn-producto" onclick="abrirModalRegistro()" style="width: calc(100% - 3rem); padding: 1rem; font-size: 1.1rem; margin-bottom: 1rem;">😊 Estoy Interesado</button>
+            <a href="https://wa.me/5551234567?text=Estoy%20interesado%20en%20${encodeURIComponent(prod.nombre)}%20-%20$${prod.precio}" target="_blank" class="btn-whatsapp" style="width: calc(100% - 3rem); padding: 1rem; font-size: 1.1rem;">💬 Consultar por WhatsApp</a>
           </div>
         </div>
 
-        <h3 style="margin-top: 2rem;">🥗 Ingredientes</h3>
-        <ul>
-          ${prod.ingredientes.map(i => `<li>${i}</li>`).join("")}
-        </ul>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 4rem;">
+          <!-- Ingredientes -->
+          <div>
+            <h3 style="color: #2c3e7f; margin-bottom: 1rem; font-size: 1.3rem;">🧪 Ingredientes</h3>
+            <ul style="list-style: none; padding: 0;">
+              ${prod.ingredientes.map(i => `<li style="padding: 0.5rem 0; color: #666; border-bottom: 1px solid #e0e0e0;">✓ ${i}</li>`).join('')}
+            </ul>
+          </div>
 
-        <h3 style="margin-top: 2rem;">✨ Beneficios</h3>
-        <ul>
-          ${prod.beneficios.map(b => `<li>${b}</li>`).join("")}
-        </ul>
+          <!-- Beneficios -->
+          <div>
+            <h3 style="color: #2c3e7f; margin-bottom: 1rem; font-size: 1.3rem;">⭐ Beneficios</h3>
+            <ul style="list-style: none; padding: 0;">
+              ${prod.beneficios.map(b => `<li style="padding: 0.5rem 0; color: #666; border-bottom: 1px solid #e0e0e0;">✓ ${b}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
 
-        <div style="margin-top: 2rem; padding: 1.5rem; background-color: #ecf0f1; border-radius: 8px; text-align: center;">
-          <p><strong>¿Tienes preguntas?</strong></p>
-          <button class="chat-link-btn" onclick="toggleChat(); abrirChatConProducto('${prod.nombre}')" style="font-size: 1rem; padding: 0.5rem 1rem; margin-top: 0.5rem;">
-            💬 Habla con nuestro Asistente
-          </button>
+        <div style="margin-top: 3rem; background: #f8f9fa; padding: 2rem; border-radius: 8px;">
+          <h3 style="color: #2c3e7f; margin-bottom: 1rem; font-size: 1.3rem;">📋 Modo de Uso</h3>
+          <p style="color: #666; font-size: 1.1rem; line-height: 1.8;">${prod.modoUso}</p>
         </div>
       `;
     } else {
-      detalleDiv.innerHTML = "<p style='text-align: center; padding: 2rem; color: #e74c3c;'><strong>❌ Producto no encontrado.</strong> <a href='index.html' style='color: #3498db;'>Volver a productos</a></p>";
+      detalleDiv.innerHTML = "<p style='text-align: center; color: #666; padding: 2rem;'>Producto no encontrado.</p>";
     }
 
-    // Función para abrir el modal de registro
-    function abrirRegistro() {
+    function abrirModalRegistro() {
       const modal = document.getElementById('registro-modal');
+      const titulo = modal.querySelector('h2');
+      titulo.textContent = `Interés en: ${prod.nombre}`;
+      modal.setAttribute('data-tipo', 'producto');
+      modal.setAttribute('data-nombre', prod.nombre);
       modal.classList.remove('hidden');
       modal.classList.add('show');
     }
 
-    // Función para cerrar modal
     function cerrarRegistro() {
       const modal = document.getElementById('registro-modal');
       modal.classList.add('hidden');
       modal.classList.remove('show');
     }
 
-    // Función para enviar registro
     function enviarRegistro(event) {
       event.preventDefault();
       
       const datos = {
+        tipo: document.getElementById('registro-modal').getAttribute('data-tipo') || 'general',
         nombre: document.getElementById('nombre').value,
-        apellidoPaterno: document.getElementById('apellido-paterno').value,
-        apellidoMaterno: document.getElementById('apellido-materno').value,
         celular: document.getElementById('celular').value,
         email: document.getElementById('email').value,
         nacimiento: document.getElementById('nacimiento').value,
         fechaNacimiento: document.getElementById('fecha-nacimiento').value,
         mensaje: document.getElementById('mensaje').value,
-        producto: prod.nombre,
-        precio: prod.precio,
         fecha: new Date().toLocaleString('es-MX')
       };
 
-      // Guardar en localStorage para simulación
+      // Guardar en localStorage
       let registros = JSON.parse(localStorage.getItem('registrosRedNatura') || '[]');
       registros.push(datos);
       localStorage.setItem('registrosRedNatura', JSON.stringify(registros));
 
-      // Mostrar mensaje de éxito
-      alert(`¡Gracias ${datos.nombre}! 🎉\n\nTu solicitud ha sido registrada.\nNos pondremos en contacto pronto al ${datos.celular}.\n\nProducto: ${datos.producto}`);
-
-      // Limpiar formulario
+      console.log('Datos para enviar:', datos);
+      alert(`¡Gracias ${datos.nombre}! Tu registro ha sido enviado.\nNos contactaremos al ${datos.celular}`);
+      
       document.getElementById('registro-form').reset();
       cerrarRegistro();
     }
-
-    // Función para abrir chat con contexto del producto
-    function abrirChatConProducto(nombreProducto) {
-      const chatInput = document.getElementById('chat-input');
-      chatInput.placeholder = `Pregunta sobre ${nombreProducto}...`;
-      chatInput.focus();
-    }
-
-    // Cerrar modal al presionar Escape
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        cerrarRegistro();
-      }
-    });
   </script>
 </body>
 </html>
