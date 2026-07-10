@@ -11,13 +11,17 @@
   <nav class="navbar">
     <div class="container">
       <div class="logo">
-        <div class="logo-text">🌿 RedNatura</div>
-        <p>Suplementos alimenticios naturales</p>
+        <img src="img/logo.png" alt="Logo RedNatura" class="logo-img" style="height: 50px; margin-right: 1rem;">
+        <div>
+          <div class="logo-text">🌿 RedNatura</div>
+          <p>Suplementos alimenticios naturales</p>
+        </div>
       </div>
       <ul class="nav-links">
         <li><a href="#productos">Productos</a></li>
         <li><a href="#sucursales">Sucursales</a></li>
         <li><a href="#contacto">Contacto</a></li>
+        <li><a href="#" onclick="toggleChat(); return false;" class="help-link">❓ Ayuda</a></li>
       </ul>
     </div>
   </nav>
@@ -50,6 +54,14 @@
         <button class="filtro-btn" onclick="filtrarProductos('Belleza', this)">Belleza</button>
         <button class="filtro-btn" onclick="filtrarProductos('Inmunológico', this)">Inmunológico</button>
         <button class="filtro-btn" onclick="filtrarProductos('Desintoxicación', this)">Desintoxicación</button>
+        <button class="filtro-btn" onclick="filtrarProductos('Control de Peso', this)">Control de Peso</button>
+        <button class="filtro-btn" onclick="filtrarProductos('Energía', this)">Energía</button>
+        <button class="filtro-btn" onclick="filtrarProductos('Glucosa', this)">Glucosa</button>
+        <button class="filtro-btn" onclick="filtrarProductos('Niños', this)">Niños</button>
+        <button class="filtro-btn" onclick="filtrarProductos('Antioxidantes', this)">Antioxidantes</button>
+        <button class="filtro-btn" onclick="filtrarProductos('Articulaciones', this)">Articulaciones</button>
+        <button class="filtro-btn" onclick="filtrarProductos('Circulación', this)">Circulación</button>
+        <button class="filtro-btn" onclick="filtrarProductos('Urinario', this)">Urinario</button>
       </div>
       <div id="productos-grid" class="productos-grid"></div>
     </div>
@@ -59,7 +71,7 @@
   <section id="sucursales" class="sucursales">
     <div class="container">
       <h2>Nuestras Sucursales</h2>
-      <p>Visítanos en cualquiera de nuestras ubicaciones en CDMX</p>
+      <p>Visítanos en cualquiera de nuestras ubicaciones</p>
       <div id="sucursales-grid" class="sucursales-grid"></div>
     </div>
   </section>
@@ -81,7 +93,7 @@
           <button class="cta-btn" onclick="toggleChat()">Habla con nuestro Asistente</button>
         </div>
         <div class="conocenos-imagen">
-          <div class="imagen-placeholder">🌱</div>
+          <img src="img/tarjeta.png" alt="Tarjeta de Descuento RedNatura" class="tarjeta-img" style="max-width: 100%; height: auto; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
         </div>
       </div>
     </div>
@@ -118,6 +130,10 @@
   <!-- Scripts -->
   <script src="js/productos.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/sucursales.js"></script>
   <script src="js/chatbot.js"></script>
 </body>
 </html>
+
+
+
