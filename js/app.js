@@ -1,55 +1,103 @@
-// Función para filtrar productos
-function filtrarProductos(categoria, btn) {
-    const productosFiltrados = categoria === 'todos' 
-        ? productos 
-        : productos.filter(p => p.categoria === categoria);
-
-    mostrarProductos(productosFiltrados);
-
-    // Actualizar botón activo
-    document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
+// --- Renderizado de productos ---
+function formatMoneda(n) {
+  if (isNaN(Number(n))) return n;
+  return '$' + Number(n).toLocaleString('es-MX', { maximumFractionDigits: 0 });
 }
 
-// Función para mostrar productos en grid
-function mostrarProductos(lista) {
-    const grid = document.getElementById('productos-grid');
-    grid.innerHTML = '';
+function filtrarProductos(filtro, boton = null) {
+  // Quitar la clase activa de todos los botones
+  document.querySelectorAll('.filtro-btn').forEach(btn => btn.classList.remove('active'));
+  if (boton) boton.classList.add('active');
 
-    lista.forEach(producto => {
-        const card = document.createElement('div');
-        card.className = 'producto-card';
-        
-        const tieneDescuento = producto.precio > 350;
-        const precioDescuento = tieneDescuento ? Math.round(producto.precio * 0.7) : null;
+  const grid = document.getElementById('productos-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
 
-        card.innerHTML = `
-            <div class="producto-imagen-container">
-                <img src="${producto.imagen}" alt="${producto.nombre}" class="producto-img">
-                ${tieneDescuento ? '<div class="descuento-badge">🎁 30% DESC</div>' : ''}
-            </div>
-            <h3>${producto.nombre}</h3>
-            <p class="desc-corta">${producto.descripcionCorta}</p>
-            <div class="producto-info">
-                <p class="precio">$${producto.precio.toLocaleString('es-MX')}</p>
-                ${tieneDescuento ? `<p class="precio-descuento">💚 $${precioDescuento.toLocaleString('es-MX')} (30% OFF)</p>` : ''}
-            </div>
-            ${tieneDescuento ? `<p class="promo-text">✨ OFERTA LIMITADA - ¡AL INSCRIBIRSE HOY! ✨</p>` : ''}
-            <button class="btn-producto" onclick="irAlDetalle(${producto.id})">📄 Ver Detalles</button>
-            <a href="https://wa.me/5551234567?text=Estoy%20interesado%20en%20el%20producto%20${encodeURIComponent(producto.nombre)}%20-%20$${producto.precio}" target="_blank" class="btn-whatsapp">💬 Consultar</a>
-        `;
-        
-        grid.appendChild(card);
-    });
+  // Filtrar productos por categoría
+  const productosFiltrados = filtro === 'todos'
+    ? productos
+    : productos.filter(p => p.categoria && p.categoria.toLowerCase() === filtro.toLowerCase());
+
+  // Crear tarjetas de producto
+  productosFiltrados.forEach(producto => {
+    const card = document.createElement('div');
+    card.className = 'producto-card';
+
+    // Si no tiene imagen definida, generar nombre de archivo automático
+    const imagenSrc = producto.imagen || generarImagen(producto.nombre);
+
+    const precioNum = parseFloat(String(producto.precio).replace(/[^0-9.-]+/g, '')) || 0;
+    const tieneDescuento = precioNum > 350;
+    const precioDescuento = tieneDescuento ? Math.round(precioNum * 0.7) : null;
+
+    card.innerHTML = `
+      <div class="producto-imagen-container">
+        <img src="${imagenSrc}" alt="${producto.nombre}" class="producto-imagen" loading="lazy" onerror="this.src='img/default.jpg'">
+        ${tieneDescuento ? '<span class="descuento-badge">30% OFF</span>' : ''}
+      </div>
+      <div class="producto-body">
+        <h3>${producto.nombre}</h3>
+        <p class="desc-corta">${producto.descripcionCorta || ''}</p>
+        <div class="producto-info">
+          <div class="precio">${formatMoneda(precioNum)}</div>
+          ${tieneDescuento ? `<div class="precio-descuento">Ahora ${formatMoneda(precioDescuento)}</div>` : ''}
+        </div>
+        <div style="display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap;">
+          <button class="btn" onclick="verDescripcion(${producto.id})">📄 Ver detalles</button>
+          <a class="btn btn-outline" href="https://wa.me/52${'5555070734'}?text=${encodeURIComponent('Estoy interesado en ' + producto.nombre)}" target="_blank">💬 WhatsApp</a>
+        </div>
+      </div>
+    `;
+
+    grid.appendChild(card);
+  });
 }
 
-// Función para ir al detalle del producto
-function irAlDetalle(productoId) {
-    window.location.href = `producto.html?id=${productoId}`;
+// --- Función para abrir detalle de producto ---
+function verDescripcion(id) {
+  window.location.href = `producto.html?id=${id}`;
 }
 
-// Cargar productos al iniciar
-document.addEventListener('DOMContentLoaded', () => {
-    mostrarProductos(productos);
-    cargarSucursales();
+// --- Renderizado de sucursales (compacto para home) ---
+function renderSucursales() {
+  const grid = document.getElementById('sucursales-grid');
+  if (!grid) return;
+
+  grid.innerHTML = '';
+
+  // Mostrar sólo unas pocas en la home para no ocupar espacio
+  const mostrar = (typeof sucursales !== 'undefined') ? sucursales.slice(0, 6) : [];
+
+  mostrar.forEach(sucursal => {
+    const nombre = sucursal.nombre || sucursal.ciudad || 'Sucursal';
+    const estado = sucursal.estado || 'Estado no especificado';
+
+    const card = document.createElement('div');
+    card.className = 'sucursal-card';
+
+    card.innerHTML = `
+      <h3>📍 ${nombre}</h3>
+      <p><strong>${estado}</strong></p>
+      <div style="margin-top:8px;">
+        <a class="btn" href="https://wa.me/52${'5555070734'}?text=${encodeURIComponent('Estoy interesado en la sucursal de ' + nombre)}" target="_blank">💬 WhatsApp</a>
+      </div>
+    `;
+
+    grid.appendChild(card);
+  });
+}
+
+// --- Generador automático de nombres de imagen ---
+function generarImagen(nombre) {
+  if (!nombre) return "img/default.jpg";
+  return "img/" + nombre.toLowerCase()
+    .replace(/[^a-z0-9]+/gi, "-") // reemplaza espacios y caracteres raros por guiones
+    .replace(/-+$/,"")            // quita guiones al final
+    + ".jpg";
+}
+
+// --- Inicialización al cargar la página ---
+window.addEventListener('DOMContentLoaded', () => {
+  filtrarProductos('todos');
+  renderSucursales();
 });
