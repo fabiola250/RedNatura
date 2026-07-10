@@ -34,6 +34,19 @@
       <div class="subtitulo">
         Descubre nuestros suplementos naturales de alta calidad, formulados con los mejores ingredientes para mejorar tu bienestar
       </div>
+
+      <!-- Tarjeta destacada hacia Sucursales (incluir en hero o justo después) -->
+      <div class="home-links" style="margin-top:18px;">
+        <a href="sucursales.html" class="card branch-card" aria-label="Ir a la página de sucursales">
+          <div class="branch-card__icon" aria-hidden="true">🏬</div>
+          <div class="branch-card__content">
+            <h3 class="branch-card__title">Sucursales</h3>
+            <p class="branch-card__subtitle">Encuentra la sucursal más cercana y sus horarios</p>
+          </div>
+          <div class="branch-card__cta">Ir</div>
+        </a>
+      </div>
+
       <button class="cta-btn" onclick="document.getElementById('productos').scrollIntoView({behavior: 'smooth'})">
         Explorar Productos
       </button>
@@ -100,18 +113,18 @@
   </section>
 
   <!-- Chatbot -->
-  <div id="chatbot" class="chatbot-container hidden">
+  <div id="chatbot" class="chatbot-container hidden" role="dialog" aria-hidden="true" aria-label="Asistente RedNatura">
     <div class="chatbot-header">
       <h3>🤖 Asistente RedNatura</h3>
-      <button class="close-btn" onclick="toggleChat()">✕</button>
+      <button class="close-btn" onclick="toggleChat()" aria-label="Cerrar asistente">✕</button>
     </div>
     <div id="chat-messages" class="chat-messages"></div>
     <div class="chat-input-area">
-      <input id="chat-input" type="text" placeholder="Escribe 'ayuda' para más opciones..." onkeypress="handleChatInput(event)">
-      <button onclick="sendMessage()">Enviar</button>
+      <input id="chat-input" type="text" placeholder="Escribe 'ayuda' para más opciones..." onkeypress="handleChatInput(event)" aria-label="Escribe un mensaje">
+      <button onclick="sendMessage()" aria-label="Enviar mensaje">Enviar</button>
     </div>
   </div>
-  <button class="chat-toggle" onclick="toggleChat()">💬 Asistente</button>
+  <button class="chat-toggle" onclick="toggleChat()" aria-label="Abrir asistente">💬</button>
 
   <!-- Modal para detalles de producto -->
   <div id="productoModal" class="modal">
@@ -134,6 +147,3 @@
   <script src="js/chatbot.js"></script>
 </body>
 </html>
-
-
-

@@ -66,25 +66,27 @@ function addMessage(texto, tipo) {
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
+// Toggle mejorado: abre, minimiza y guarda estado temporal
 function toggleChat() {
   const chatbot = document.getElementById('chatbot');
   if (!chatbot) return;
+  const toggleButton = document.querySelector('.chat-toggle');
 
-  const isHidden = chatbot.classList.contains('hidden');
-  if (isHidden) {
+  // si está minimizado (solo botón visible)
+  if (chatbot.classList.contains('hidden')) {
     chatbot.classList.remove('hidden');
     chatbot.classList.add('show');
-
+    chatbot.setAttribute('aria-hidden', 'false');
+    if (toggleButton) toggleButton.style.display = 'none';
     if (chatMessages.length === 0) {
-      setTimeout(() => {
-        addMessage(respuestasBot.bienvenida, 'bot');
-        mostrarMenuPrincipal();
-        chatMessages.push('bienvenida');
-      }, 200);
+      setTimeout(() => { addMessage(respuestasBot.bienvenida, 'bot'); mostrarMenuPrincipal(); chatMessages.push('bienvenida'); }, 200);
     }
   } else {
+    // minimizar: ocultar ventana y mostrar botón flotante
     chatbot.classList.add('hidden');
     chatbot.classList.remove('show');
+    chatbot.setAttribute('aria-hidden', 'true');
+    if (toggleButton) toggleButton.style.display = 'flex';
   }
 }
 
@@ -135,7 +137,7 @@ function mostrarCategorias() {
   if (!messagesDiv) return;
   const categoriasEl = document.createElement('div');
   categoriasEl.className = 'chat-menu';
-  const categorias = ['Digestión','Mental','Mujeres','Hombres','Niños','Belleza','Inmunológico','Energía','Glucosa','Circulación','Articulaciones','Desintoxicación','Control de Peso','Urinario','Antioxidantes'];
+  const categorias = ['Digestión','Mental','Mujeres','Hombres','Niños','Belleza','Inmunológico','Energía','Glucosa','Circulación','Articulaciones','Desintoxicación','Control de Peso','Urinario'];
   categorias.forEach(cat => {
     const b = document.createElement('button');
     b.type = 'button';
@@ -315,3 +317,9 @@ function mostrarOfertas() {
   messagesDiv.appendChild(ofertasEl);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
+
+// Ajustes de accesibilidad y comportamiento del toggle al cargar
+document.addEventListener('DOMContentLoaded', () => {
+  const t = document.querySelector('.chat-toggle');
+  if (t) { t.setAttribute('aria-label','Abrir asistente'); t.style.display = 'flex'; }
+});
