@@ -1,28 +1,36 @@
 // Maneja el envío del formulario de registro dentro del modal de producto
 function enviarFormulario(e){
-  e.preventDefault();
-  const form = e.target || document.getElementById('registro-form');
+  if(e && e.preventDefault) e.preventDefault();
+  const form = e?.target || document.getElementById('registro-form');
+  if(!form) return false;
 
   // recolectar datos
-  const nombre = form.nombre.value.trim();
-  const apellidos = form.apellidos.value.trim();
-  const telefono = form.telefono.value.trim();
-  const email = form.email.value.trim();
-  const lugar = form.lugar.value.trim();
-  const fecha = form.fecha.value;
-  const tipo = form.tipo.value;
-  const mensaje = form.mensaje.value.trim();
+  const nombre = (form.nombre?.value || '').trim();
+  const apellidos = (form.apellidos?.value || '').trim();
+  const telefono = (form.telefono?.value || '').trim();
+  const email = (form.email?.value || '').trim();
+  const lugar = (form.lugar?.value || '').trim();
+  const fecha = (form.fecha?.value || '');
+  const tipo = (form.tipo?.value || '');
+  const mensaje = (form.mensaje?.value || '').trim();
 
   if(!nombre || !apellidos || !telefono || !email || !lugar || !fecha){
     alert('Por favor completa todos los campos obligatorios.');
     return false;
   }
 
-  // abrir whatsapp con el mensaje preformateado
+  // Validación simple de email y teléfono
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if(!emailRe.test(email)){ alert('Introduce un email válido.'); return false; }
+  if(telefono.replace(/\D/g,'').length < 7){ alert('Introduce un teléfono válido.'); return false; }
+
+  // armar texto para WhatsApp
   const waNum = '52' + '5555070734';
-  const waText = encodeURIComponent(`Nuevo registro:\nNombre: ${nombre} ${apellidos}\nTel: ${telefono}\nEmail: ${email}\nLugar de nacimiento: ${lugar}\nFecha de nacimiento: ${fecha}\nInterés: ${tipo}\nMensaje: ${mensaje}`);
+  const waTextRaw = `Nuevo registro:\nNombre: ${nombre} ${apellidos}\nTel: ${telefono}\nEmail: ${email}\nLugar de nacimiento: ${lugar}\nFecha de nacimiento: ${fecha}\nInterés: ${tipo}\nMensaje: ${mensaje}`;
+  const waText = encodeURIComponent(waTextRaw);
   const waUrl = `https://wa.me/${waNum}?text=${waText}`;
-  window.open(waUrl, '_blank');
+  // abrir WhatsApp en nueva pestaña
+  try{ window.open(waUrl, '_blank'); } catch(err){ console.warn('No se pudo abrir WhatsApp:', err); }
 
   // Enviar a Formsubmit (si quieres conservar copia por email)
   const formData = new FormData();
@@ -44,10 +52,12 @@ function enviarFormulario(e){
   }).then(res => res.json()).then(data => {
     // mostrar confirmación
     const cont = document.getElementById('mensaje-confirmacion');
-    cont.innerHTML = '<div style="padding:12px;background:#ecfdf5;border-radius:8px;margin-top:12px;color:#064e3b;">Registro enviado. Te contactaremos pronto.</div>';
+    if(cont) cont.innerHTML = '<div style="padding:12px;background:#ecfdf5;border-radius:8px;margin-top:12px;color:#064e3b;">Registro enviado. Te contactaremos pronto.</div>';
     // cerrar modal
     setTimeout(() => { cerrarRegistro(); }, 1500);
+
   }).catch(err => {
+    console.error('Error enviando formulario:', err);
     alert('Ocurrió un error al enviar. Intenta de nuevo.');
   });
 
@@ -57,13 +67,11 @@ function enviarFormulario(e){
 function abrirRegistroCon(tipo){
   const modal = document.getElementById('registro-modal');
   const inputTipo = document.getElementById('tipo');
-  inputTipo.value = tipo || '';
-  modal.classList.remove('hidden');
-  modal.classList.add('show');
+  if(inputTipo) inputTipo.value = tipo || '';
+  if(modal){ modal.classList.remove('hidden'); modal.classList.add('show'); }
 }
 
 function cerrarRegistro(){
   const modal = document.getElementById('registro-modal');
-  modal.classList.add('hidden');
-  modal.classList.remove('show');
+  if(modal){ modal.classList.add('hidden'); modal.classList.remove('show'); }
 }
