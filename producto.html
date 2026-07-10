@@ -11,8 +11,11 @@
   <nav class="navbar">
     <div class="container">
       <div class="logo">
-        <h1>🌿 RedNatura</h1>
-        <p>Suplementos alimenticios naturales</p>
+        <img src="img/logo.png" alt="Logo RedNatura" class="logo-img" style="height: 50px; margin-right: 1rem;">
+        <div>
+          <div class="logo-text">🌿 RedNatura</div>
+          <p>Suplementos alimenticios naturales</p>
+        </div>
       </div>
       <ul class="nav-links">
         <li><a href="index.html#bienvenida">Inicio</a></li>
@@ -55,16 +58,35 @@
   <div id="registro-modal" class="modal hidden">
     <div class="modal-content">
       <button class="close-modal" onclick="cerrarRegistro()">×</button>
-      <h2>Registro de Interés</h2>
-      <form id="registro-form" onsubmit="enviarRegistro(event)">
-        <input type="text" id="nombre" placeholder="Nombre completo" required>
-        <input type="tel" id="celular" placeholder="Celular" required>
-        <input type="email" id="email" placeholder="Email" required>
-        <input type="text" id="nacimiento" placeholder="Lugar de nacimiento" required>
-        <input type="date" id="fecha-nacimiento" placeholder="Fecha de nacimiento" required>
-        <textarea id="mensaje" placeholder="Mensaje (opcional)" rows="3"></textarea>
-        <button type="submit" class="btn-submit">Enviar Solicitud</button>
+      <h2>📝 Registro de Interés</h2>
+      <form id="registro-form" name="contact" method="POST" netlify onsubmit="return enviarFormulario(event)">
+        <label><strong>Nombre:</strong></label>
+        <input type="text" name="nombre" placeholder="Tu nombre" required>
+
+        <label><strong>Apellidos:</strong></label>
+        <input type="text" name="apellidos" placeholder="Tus apellidos" required>
+
+        <label><strong>Teléfono:</strong></label>
+        <input type="tel" name="telefono" placeholder="10 dígitos (ej: 5555070734)" required>
+
+        <label><strong>Email:</strong></label>
+        <input type="email" name="email" placeholder="tu@email.com" required>
+
+        <label><strong>Lugar de nacimiento:</strong></label>
+        <input type="text" name="lugar" placeholder="Ciudad o Estado" required>
+
+        <label><strong>Fecha de nacimiento:</strong></label>
+        <input type="date" name="fecha" required>
+
+        <label><strong>Producto/Sucursal de interés:</strong></label>
+        <input type="text" id="tipo" name="tipo" placeholder="Producto o sucursal" readonly style="background: #f0f0f0; cursor: not-allowed;">
+
+        <label><strong>Mensaje adicional:</strong></label>
+        <textarea name="mensaje" placeholder="Pregunta o comentario (opcional)" rows="3"></textarea>
+
+        <button type="submit" class="btn-submit">📧 Enviar Formulario</button>
       </form>
+      <div id="mensaje-confirmacion"></div>
     </div>
   </div>
 
@@ -72,6 +94,7 @@
   <script src="js/productos.js"></script>
   <script src="js/sucursales.js"></script>
   <script src="js/chatbot.js"></script>
+  <script src="js/form-handler.js"></script>
   <script>
     // Obtener el ID desde la URL
     const params = new URLSearchParams(window.location.search);
@@ -88,8 +111,8 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;">
           <!-- Imagen izquierda -->
           <div style="text-align: center;">
-            <img src="${prod.imagen}" alt="${prod.nombre}" style="max-width: 100%; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
-            ${tieneDescuento ? `<p style="margin-top: 2rem; background: linear-gradient(135deg, #ffd89b 0%, #fff5d0 100%); color: #d84315; padding: 1rem; border-radius: 8px; font-weight: bold; border: 2px solid #ff9800; animation: glow 2s ease-in-out infinite;">✨ OFERTA LIMITADA - ¡AL INSCRIBIRSE HOY OBTENDRÁS 30% DE DESCUENTO! ✨</p>` : ''}
+            <img src="${prod.imagen}" alt="${prod.nombre}" style="max-width: 100%; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); object-fit:contain;" onerror="this.src='img/placeholder.png'">
+            ${tieneDescuento ? `<p style="margin-top: 2rem; background: linear-gradient(135deg, #ffd89b 0%, #fff5d0 100%); color: #d84315; padding: 1rem; border-radius: 8px; font-weight: bold;">💚 30% OFF - Oferta por tiempo limitado</p>` : ''}
           </div>
 
           <!-- Detalles derecha -->
@@ -107,8 +130,10 @@
               ${tieneDescuento ? `<p style="font-size: 1.3rem; color: #27ae60; font-weight: bold;">💚 Con 30% DESC: $${precioDescuento.toLocaleString('es-MX')}</p>` : ''}
             </div>
 
-            <button class="btn-producto" onclick="abrirModalRegistro()" style="width: calc(100% - 3rem); padding: 1rem; font-size: 1.1rem; margin-bottom: 1rem;">😊 Estoy Interesado</button>
-            <a href="https://wa.me/5551234567?text=Estoy%20interesado%20en%20${encodeURIComponent(prod.nombre)}%20-%20$${prod.precio}" target="_blank" class="btn-whatsapp" style="width: calc(100% - 3rem); padding: 1rem; font-size: 1.1rem;">💬 Consultar por WhatsApp</a>
+            <div style="display:flex;gap:8px;flex-direction:column;">
+              <button class="btn" onclick="window.location.href='contacto.html?producto=${encodeURIComponent(prod.nombre)}&precio=${encodeURIComponent(prod.precio)}'" style="width:100%; padding: 1rem; font-size: 1.1rem; margin-bottom: 0.5rem;">💚 Estoy interesado</button>
+              <a href="https://wa.me/5555070734?text=Estoy%20interesado%20en%20${encodeURIComponent(prod.nombre)}%20-%20$${prod.precio}" target="_blank" class="btn btn-whatsapp" style="text-align:center; padding:1rem;">💬 Consultar por WhatsApp</a>
+            </div>
           </div>
         </div>
 
@@ -135,50 +160,12 @@
           <p style="color: #666; font-size: 1.1rem; line-height: 1.8;">${prod.modoUso}</p>
         </div>
       `;
+
+      // Establecer el tipo de producto en el formulario
+      const tipoInput = document.getElementById('tipo');
+      if (tipoInput) tipoInput.value = prod.nombre;
     } else {
       detalleDiv.innerHTML = "<p style='text-align: center; color: #666; padding: 2rem;'>Producto no encontrado.</p>";
-    }
-
-    function abrirModalRegistro() {
-      const modal = document.getElementById('registro-modal');
-      const titulo = modal.querySelector('h2');
-      titulo.textContent = `Interés en: ${prod.nombre}`;
-      modal.setAttribute('data-tipo', 'producto');
-      modal.setAttribute('data-nombre', prod.nombre);
-      modal.classList.remove('hidden');
-      modal.classList.add('show');
-    }
-
-    function cerrarRegistro() {
-      const modal = document.getElementById('registro-modal');
-      modal.classList.add('hidden');
-      modal.classList.remove('show');
-    }
-
-    function enviarRegistro(event) {
-      event.preventDefault();
-      
-      const datos = {
-        tipo: document.getElementById('registro-modal').getAttribute('data-tipo') || 'general',
-        nombre: document.getElementById('nombre').value,
-        celular: document.getElementById('celular').value,
-        email: document.getElementById('email').value,
-        nacimiento: document.getElementById('nacimiento').value,
-        fechaNacimiento: document.getElementById('fecha-nacimiento').value,
-        mensaje: document.getElementById('mensaje').value,
-        fecha: new Date().toLocaleString('es-MX')
-      };
-
-      // Guardar en localStorage
-      let registros = JSON.parse(localStorage.getItem('registrosRedNatura') || '[]');
-      registros.push(datos);
-      localStorage.setItem('registrosRedNatura', JSON.stringify(registros));
-
-      console.log('Datos para enviar:', datos);
-      alert(`¡Gracias ${datos.nombre}! Tu registro ha sido enviado.\nNos contactaremos al ${datos.celular}`);
-      
-      document.getElementById('registro-form').reset();
-      cerrarRegistro();
     }
   </script>
 </body>
