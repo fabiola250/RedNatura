@@ -1,11 +1,16 @@
-// --- Renderizado de productos ---
-function formatMoneda(n) {
-  if (isNaN(Number(n))) return n;
-  return '$' + Number(n).toLocaleString('es-MX', { maximumFractionDigits: 0 });
+function formatMoneda(value) {
+  if (isNaN(Number(value))) return value;
+  return Number(value).toLocaleString('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 });
+}
+
+function crearPlaceholderProducto(nombre) {
+  const placeholder = document.createElement('div');
+  placeholder.className = 'producto-placeholder';
+  placeholder.textContent = nombre;
+  return placeholder;
 }
 
 function filtrarProductos(filtro, boton = null) {
-  // Quitar la clase activa de todos los botones
   document.querySelectorAll('.filtro-btn').forEach(btn => btn.classList.remove('active'));
   if (boton) boton.classList.add('active');
 
@@ -13,61 +18,53 @@ function filtrarProductos(filtro, boton = null) {
   if (!grid) return;
   grid.innerHTML = '';
 
-  // Filtrar productos por categoría
   const productosFiltrados = filtro === 'todos'
     ? productos
-    : productos.filter(p => p.categoria && p.categoria.toLowerCase() === filtro.toLowerCase());
+    : productos.filter(producto => producto.categoria?.toLowerCase() === filtro.toLowerCase());
 
-  // Crear tarjetas de producto
+  if (!productosFiltrados.length) {
+    grid.innerHTML = '<div class="empty-state"><h3>Pronto habrá opciones aquí.</h3><p>Explora otra categoría o solicita orientación personalizada.</p></div>';
+    return;
+  }
+
   productosFiltrados.forEach(producto => {
-    const card = document.createElement('div');
+    const card = document.createElement('article');
     card.className = 'producto-card';
-
-    // Si no tiene imagen definida, generar nombre de archivo automático
-    const imagenSrc = producto.imagen || generarImagen(producto.nombre);
-
-    const precioNum = parseFloat(String(producto.precio).replace(/[^0-9.-]+/g, '')) || 0;
-    const tieneDescuento = precioNum > 350;
-    const precioDescuento = tieneDescuento ? Math.round(precioNum * 0.7) : null;
+    const precio = Number(producto.precio) || 0;
+    const tieneDescuento = precio > 350;
+    const precioFinal = tieneDescuento ? Math.round(precio * 0.7) : precio;
+    const ahorro = precio - precioFinal;
 
     card.innerHTML = `
       <div class="producto-imagen-container">
-        <img src="${imagenSrc}" alt="${producto.nombre}" class="producto-imagen" loading="lazy" onerror="this.src='img/default.jpg'">
-        ${tieneDescuento ? '<span class="descuento-badge">30% OFF</span>' : ''}
+        <img src="${producto.imagen || generarImagen(producto.nombre)}" alt="${producto.nombre}" class="producto-imagen" loading="lazy">
+        ${tieneDescuento ? '<span class="descuento-badge">30% DE DESCUENTO</span>' : ''}
       </div>
       <div class="producto-body">
+        <p class="producto-category">${producto.categoria || 'Bienestar'}</p>
         <h3>${producto.nombre}</h3>
-        <p class="desc-corta">${producto.descripcionCorta || ''}</p>
+        <p class="desc-corta">${producto.descripcionCorta || 'Conoce sus beneficios y presentación.'}</p>
         <div class="producto-info">
-          <div class="precio">${formatMoneda(precioNum)}</div>
-          ${tieneDescuento ? `<div class="precio-descuento">Ahora ${formatMoneda(precioDescuento)}</div>` : ''}
+          <div class="price-stack">
+            ${tieneDescuento ? `<span class="price-label">Precio regular</span><span class="precio original">${formatMoneda(precio)}</span><span class="price-label">Precio promoción</span><strong class="precio-descuento">${formatMoneda(precioFinal)}</strong>` : `<span class="price-label">Precio</span><strong class="precio-descuento">${formatMoneda(precio)}</strong>`}
+          </div>
+          ${tieneDescuento ? `<span class="saving-pill">Ahorras ${formatMoneda(ahorro)}</span>` : ''}
         </div>
         <div class="producto-actions">
-          <button class="btn" onclick="verDescripcion(${producto.id})">📄 Ver detalles</button>
-          <a class="btn btn-whatsapp" href="https://wa.me/52${'5555070734'}?text=${encodeURIComponent('Hola, estoy interesado en ' + producto.nombre + '. ¿Me pueden dar más información?')}" target="_blank" rel="noopener">💬 Consultar por WhatsApp</a>
+          <button class="btn" onclick="verDescripcion(${producto.id})">Ver producto <span aria-hidden="true">→</span></button>
+          <a class="btn btn-whatsapp" href="https://wa.me/525555070734?text=${encodeURIComponent(`Hola, quiero información sobre ${producto.nombre} (${formatMoneda(precioFinal)}).`)}" target="_blank" rel="noopener" aria-label="Consultar ${producto.nombre} por WhatsApp">↗<span> WhatsApp</span></a>
         </div>
-      </div>
-    `;
+      </div>`;
 
+    const image = card.querySelector('.producto-imagen');
+    image.addEventListener('error', () => image.replaceWith(crearPlaceholderProducto(producto.nombre)), { once: true });
     grid.appendChild(card);
   });
 }
 
-// --- Función para abrir detalle de producto ---
-function verDescripcion(id) {
-  window.location.href = `producto.html?id=${id}`;
-}
-
-// --- Generador automático de nombres de imagen ---
+function verDescripcion(id) { window.location.href = `producto.html?id=${id}`; }
 function generarImagen(nombre) {
-  if (!nombre) return "img/default.jpg";
-  return "img/" + nombre.toLowerCase()
-    .replace(/[^a-z0-9]+/gi, "-") // reemplaza espacios y caracteres raros por guiones
-    .replace(/-+$/,"")            // quita guiones al final
-    + ".jpg";
+  if (!nombre) return 'img/default.jpg';
+  return `img/${nombre.toLowerCase().replace(/[^a-z0-9]+/gi, '-').replace(/-+$/, '')}.jpg`;
 }
-
-// --- Inicialización al cargar la página ---
-window.addEventListener('DOMContentLoaded', () => {
-  filtrarProductos('todos');
-});
+window.addEventListener('DOMContentLoaded', () => filtrarProductos('todos'));
