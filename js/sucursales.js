@@ -67,20 +67,20 @@ function cargarSucursales(renderDedicado = false) {
 
     if (renderDedicado) {
       card.innerHTML = `
-        <h3>📍 ${nombre}</h3>
+        <h3>${nombre}</h3>
         <p><strong>${estado}</strong></p>
         <p class="horario">Horario: Lunes a Viernes 9am - 7pm, Sábados 9am - 2pm</p>
         <div class="sucursal-actions">
-          <a class="btn btn-whatsapp" href="${waHref}" target="_blank" rel="noopener">💬 Consultar por WhatsApp</a>
-          <a class="btn btn-outline" href="contacto.html?producto=${encodeURIComponent('Sucursal ' + nombre)}">📩 Pedir información</a>
+          <a class="btn btn-whatsapp" href="${waHref}" target="_blank" rel="noopener">Consultar por WhatsApp</a>
+          <a class="btn btn-outline" href="contacto.html?producto=${encodeURIComponent('Sucursal ' + nombre)}">Pedir información</a>
         </div>
       `;
     } else {
       card.innerHTML = `
-        <h3>📍 ${nombre}</h3>
+        <h3>${nombre}</h3>
         <p><strong>${estado}</strong></p>
         <div class="sucursal-actions">
-          <a class="btn btn-whatsapp" href="${waHref}" target="_blank" rel="noopener">💬 Consultar por WhatsApp</a>
+          <a class="btn btn-whatsapp" href="${waHref}" target="_blank" rel="noopener">Consultar por WhatsApp</a>
         </div>
       `;
     }

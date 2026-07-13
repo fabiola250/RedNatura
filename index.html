@@ -3,167 +3,124 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RedNatura - Suplementos Naturales</title>
+  <meta name="description" content="Suplementos alimenticios naturales con asesoría personalizada y sucursales en México.">
+  <title>RedNatura | Bienestar natural, atención cercana</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar">
+  <nav class="navbar" aria-label="Navegación principal">
     <div class="container">
-      <div class="logo">
-        <img src="img/logo.png" alt="Logo RedNatura" class="logo-img" style="height: 50px; margin-right: 1rem;">
-        <div>
-          <div class="logo-text">🌿 RedNatura</div>
-          <p>Suplementos alimenticios naturales</p>
-        </div>
-      </div>
+      <a class="logo" href="index.html" aria-label="RedNatura, inicio">
+        <img src="img/logo.png" alt="" class="logo-img">
+        <span><span class="logo-text">RedNatura</span><span class="brand-note">Bienestar natural</span></span>
+      </a>
       <ul class="nav-links">
         <li><a href="#productos">Productos</a></li>
         <li><a href="sucursales.html">Sucursales</a></li>
-        <li><a href="#contacto">Contacto</a></li>
-        <li><a href="#" onclick="toggleChat(); return false;" class="help-link">❓ Ayuda</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+        <li><a href="#" onclick="toggleChat(); return false;" class="help-link">Asesoría</a></li>
       </ul>
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <section class="hero" id="bienvenida">
-    <div class="hero-shell">
-      <div class="hero-content">
-        <span class="hero-kicker">Bienestar natural · Atención personalizada</span>
-        <h1>Encuentra el apoyo natural que tu bienestar necesita</h1>
-        <p class="hero-lead">Te orientamos para elegir suplementos de calidad según tus objetivos, con atención cercana antes y después de tu compra.</p>
-        <div class="hero-actions">
-          <a class="cta-btn cta-primary" href="https://wa.me/525555070734?text=Hola%2C%20quiero%20recibir%20asesor%C3%ADa%20para%20elegir%20un%20producto%20RedNatura" target="_blank" rel="noopener">
-            <span aria-hidden="true">💬</span> Hablar por WhatsApp
+  <main>
+    <section class="hero" id="bienvenida">
+      <div class="hero-shell">
+        <div class="hero-content">
+          <span class="hero-kicker">Bienestar natural · Atención personalizada</span>
+          <h1>Tu bienestar, en <em>armonía</em> con la naturaleza.</h1>
+          <p class="hero-lead">Encuentra suplementos seleccionados para acompañar tus objetivos. Te orientamos de forma cercana para que elijas con seguridad y confianza.</p>
+          <div class="hero-actions">
+            <a class="cta-btn cta-primary" href="https://wa.me/525555070734?text=Hola%2C%20quiero%20recibir%20asesor%C3%ADa%20para%20elegir%20un%20producto%20RedNatura" target="_blank" rel="noopener">Recibir asesoría <span aria-hidden="true">→</span></a>
+            <a class="cta-btn cta-secondary" href="#productos">Explorar productos</a>
+          </div>
+          <div class="hero-trust" aria-label="Ventajas de RedNatura">
+            <span>✓ Orientación personal</span><span>✓ Compra informada</span><span>✓ Presencia en México</span>
+          </div>
+        </div>
+        <aside class="hero-sales-card" aria-label="Promoción y contacto">
+          <span class="sales-card-label">Promoción especial</span>
+          <h2>Cuida más de ti, pagando menos.</h2>
+          <p>Productos seleccionados muestran un 30% de descuento. El precio promocional aparece destacado para que compres con total claridad.</p>
+          <a class="whatsapp-card" href="https://wa.me/525555070734?text=Hola%2C%20necesito%20ayuda%20para%20elegir%20un%20suplemento" target="_blank" rel="noopener">
+            <span class="whatsapp-card__icon" aria-hidden="true">↗</span><span><strong>Asesoría por WhatsApp</strong><small>Respuesta directa: 55 5507 0734</small></span><span class="whatsapp-card__arrow">→</span>
           </a>
-          <button class="cta-btn cta-secondary" onclick="document.getElementById('productos').scrollIntoView({behavior: 'smooth'})">
-            Ver productos
-          </button>
+          <a href="sucursales.html" class="branch-card">
+            <span class="branch-card__icon" aria-hidden="true">⌖</span><span><strong>Encuentra tu sucursal</strong><small>Consulta atención por ciudad</small></span><span class="branch-card__cta">Ver todas</span>
+          </a>
+        </aside>
+      </div>
+    </section>
+
+    <section id="productos" class="productos">
+      <div class="container">
+        <div class="section-heading">
+          <div><span class="section-kicker">Catálogo RedNatura</span><h2>Elige tu forma de sentirte bien.</h2></div>
+          <p>Explora por categoría y descubre opciones para cada etapa de tu bienestar. Los precios finales y promociones siempre se muestran de forma visible.</p>
         </div>
-        <div class="hero-trust" aria-label="Ventajas de comprar en RedNatura">
-          <span>✓ Asesoría personal</span>
-          <span>✓ Compra informada</span>
-          <span>✓ Sucursales en México</span>
+        <div class="filtros" aria-label="Filtrar productos por categoría">
+          <button class="filtro-btn active" onclick="filtrarProductos('todos', this)">Todos</button>
+          <button class="filtro-btn" onclick="filtrarProductos('Digestión', this)">Digestión</button>
+          <button class="filtro-btn" onclick="filtrarProductos('Mental', this)">Mental</button>
+          <button class="filtro-btn" onclick="filtrarProductos('Mujeres', this)">Mujeres</button>
+          <button class="filtro-btn" onclick="filtrarProductos('Hombres', this)">Hombres</button>
+          <button class="filtro-btn" onclick="filtrarProductos('Belleza', this)">Belleza</button>
+          <button class="filtro-btn" onclick="filtrarProductos('Inmunológico', this)">Inmunológico</button>
+          <button class="filtro-btn" onclick="filtrarProductos('Desintoxicación', this)">Desintoxicación</button>
+          <button class="filtro-btn" onclick="filtrarProductos('Control de Peso', this)">Control de peso</button>
+          <button class="filtro-btn" onclick="filtrarProductos('Energía', this)">Energía</button>
+          <button class="filtro-btn" onclick="filtrarProductos('Glucosa', this)">Glucosa</button>
+          <button class="filtro-btn" onclick="filtrarProductos('Niños', this)">Niños</button>
+          <button class="filtro-btn" onclick="filtrarProductos('Antioxidantes', this)">Antioxidantes</button>
+          <button class="filtro-btn" onclick="filtrarProductos('Articulaciones', this)">Articulaciones</button>
+          <button class="filtro-btn" onclick="filtrarProductos('Circulación', this)">Circulación</button>
+          <button class="filtro-btn" onclick="filtrarProductos('Urinario', this)">Urinario</button>
         </div>
+        <div id="productos-grid" class="productos-grid" aria-live="polite"></div>
       </div>
+    </section>
 
-      <aside class="hero-sales-card" aria-label="Contacto y sucursales RedNatura">
-        <span class="sales-card-label">Estamos para ayudarte</span>
-        <h2>¿No sabes cuál elegir?</h2>
-        <p>Cuéntanos qué objetivo de bienestar tienes y recibe orientación directa por WhatsApp.</p>
-        <a class="whatsapp-card" href="https://wa.me/525555070734?text=Hola%2C%20necesito%20ayuda%20para%20elegir%20un%20suplemento" target="_blank" rel="noopener">
-          <span class="whatsapp-card__icon" aria-hidden="true">💬</span>
-          <span><strong>Asesoría por WhatsApp</strong><small>Respuesta directa: 55 5507 0734</small></span>
-          <span class="whatsapp-card__arrow" aria-hidden="true">→</span>
-        </a>
-        <a href="sucursales.html" class="branch-card" aria-label="Ver todas las sucursales RedNatura">
-          <span class="branch-card__icon" aria-hidden="true">⌖</span>
-          <span class="branch-card__content">
-            <strong class="branch-card__title">Encuentra tu sucursal</strong>
-            <small class="branch-card__subtitle">Consulta ubicaciones y atención por ciudad</small>
-          </span>
-          <span class="branch-card__cta">Ver todas</span>
-        </a>
-      </aside>
-    </div>
-  </section>
-
-  <!-- Sección Productos -->
-  <section id="productos" class="productos">
-    <div class="container">
-      <h2>Nuestros Productos</h2>
-      <p class="descripcion">Selecciona la categoría que buscas</p>
-      <div class="filtros">
-        <button class="filtro-btn active" onclick="filtrarProductos('todos', this)">Todos</button>
-        <button class="filtro-btn" onclick="filtrarProductos('Digestión', this)">Digestión</button>
-        <button class="filtro-btn" onclick="filtrarProductos('Mental', this)">Mental</button>
-        <button class="filtro-btn" onclick="filtrarProductos('Mujeres', this)">Mujeres</button>
-        <button class="filtro-btn" onclick="filtrarProductos('Hombres', this)">Hombres</button>
-        <button class="filtro-btn" onclick="filtrarProductos('Belleza', this)">Belleza</button>
-        <button class="filtro-btn" onclick="filtrarProductos('Inmunológico', this)">Inmunológico</button>
-        <button class="filtro-btn" onclick="filtrarProductos('Desintoxicación', this)">Desintoxicación</button>
-        <button class="filtro-btn" onclick="filtrarProductos('Control de Peso', this)">Control de Peso</button>
-        <button class="filtro-btn" onclick="filtrarProductos('Energía', this)">Energía</button>
-        <button class="filtro-btn" onclick="filtrarProductos('Glucosa', this)">Glucosa</button>
-        <button class="filtro-btn" onclick="filtrarProductos('Niños', this)">Niños</button>
-        <button class="filtro-btn" onclick="filtrarProductos('Antioxidantes', this)">Antioxidantes</button>
-        <button class="filtro-btn" onclick="filtrarProductos('Articulaciones', this)">Articulaciones</button>
-        <button class="filtro-btn" onclick="filtrarProductos('Circulación', this)">Circulación</button>
-        <button class="filtro-btn" onclick="filtrarProductos('Urinario', this)">Urinario</button>
+    <section class="promo-strip" aria-label="Promoción de productos seleccionados">
+      <div class="container promo-strip__inner">
+        <strong class="promo-number">30%</strong>
+        <div><h2>Una promoción que sí se nota.</h2><p>Identifica el sello terracota y consulta el precio final destacado.</p></div>
+        <a class="cta-btn" href="#productos">Ver promociones</a>
       </div>
-      <div id="productos-grid" class="productos-grid"></div>
-    </div>
-  </section>
+    </section>
 
-  <section id="sucursales" class="branch-spotlight">
-    <div class="container branch-spotlight__inner">
-      <div>
-        <span class="section-kicker">Atención cerca de ti</span>
-        <h2>RedNatura en distintas ciudades de México</h2>
-        <p>Abre nuestro directorio para encontrar la sucursal más conveniente y consultar directamente por WhatsApp.</p>
+    <section class="branch-spotlight">
+      <div class="container branch-spotlight__inner">
+        <div><span class="section-kicker">Atención cerca de ti</span><h2>Una red presente en distintas ciudades de México.</h2><p>Encuentra la sucursal más conveniente y recibe atención directa por WhatsApp.</p></div>
+        <a class="branch-spotlight__action" href="sucursales.html">Ver sucursales <span>→</span></a>
       </div>
-      <a class="branch-spotlight__action" href="sucursales.html">
-        Explorar sucursales <span aria-hidden="true">→</span>
-      </a>
-    </div>
-  </section>
+    </section>
 
-  <!-- Sección Contacto -->
-  <section id="contacto" class="contacto">
-    <div class="container">
-      <h2>Conócenos</h2>
-      <div class="conocenos-content">
+    <section id="contacto" class="contacto">
+      <div class="container conocenos-content">
         <div class="conocenos-texto">
-          <h3>¿Por qué elegir RedNatura?</h3>
-          <p>Somos una empresa comprometida con tu bienestar integral. Nuestros productos son formulados con ingredientes naturales de la más alta calidad, sin aditivos artificiales.</p>
-          <ul class="beneficios-list">
-            <li>✓ Ingredientes naturales certificados</li>
-            <li>✓ Formulaciones científicamente comprobadas</li>
-            <li>✓ Atención personalizada de nuestro equipo</li>
-            <li>✓ Promociones exclusivas para miembros</li>
-          </ul>
-          <button class="cta-btn" onclick="toggleChat()">Habla con nuestro Asistente</button>
+          <span class="section-kicker">Acompañamiento humano</span>
+          <h2>No tienes que elegir a ciegas.</h2>
+          <p>Cuéntanos qué buscas. Nuestro equipo te ayuda a conocer las opciones disponibles y resolver tus dudas antes de comprar.</p>
+          <ul class="beneficios-list"><li>Orientación personalizada</li><li>Información clara</li><li>Atención por WhatsApp</li><li>Sucursales en México</li></ul>
+          <button class="cta-btn cta-primary" onclick="toggleChat()">Hablar con el asistente</button>
         </div>
-        <div class="conocenos-imagen">
-          <img src="img/tarjeta.png" alt="Tarjeta de Descuento RedNatura" class="tarjeta-img" style="max-width: 100%; height: auto; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
-        </div>
+        <figure class="conocenos-imagen tarjeta-frame">
+          <img src="img/tarjeta.png" alt="Tarjeta informativa de RedNatura" onerror="this.hidden=true; this.parentElement.classList.add('tarjeta-pendiente')">
+          <figcaption><strong>Espacio para tarjeta.png</strong><span>La imagen se mostrará aquí al agregarla en la carpeta img.</span></figcaption>
+        </figure>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <!-- Chatbot -->
-  <div id="chatbot" class="chatbot-container hidden" role="dialog" aria-hidden="true" aria-label="Asistente RedNatura">
-    <div class="chatbot-header">
-      <h3>🤖 Asistente RedNatura</h3>
-      <button class="close-btn" onclick="toggleChat()" aria-label="Cerrar asistente">✕</button>
-    </div>
+  <footer class="footer"><p>© 2026 RedNatura · Suplementos alimenticios naturales · Representante: Fabiola</p></footer>
+
+  <div id="chatbot" class="chatbot-container hidden">
+    <div class="chatbot-header"><h3>Asistente RedNatura</h3><button class="close-btn" onclick="toggleChat()" aria-label="Cerrar chat">×</button></div>
     <div id="chat-messages" class="chat-messages"></div>
-    <div class="chat-input-area">
-      <input id="chat-input" type="text" placeholder="Escribe 'ayuda' para más opciones..." onkeypress="handleChatInput(event)" aria-label="Escribe un mensaje">
-      <button onclick="sendMessage()" aria-label="Enviar mensaje">Enviar</button>
-    </div>
+    <div class="chat-input-area"><input id="chat-input" type="text" placeholder="Escribe tu pregunta..." onkeypress="handleChatInput(event)"><button onclick="sendMessage()">Enviar</button></div>
   </div>
-  <button class="chat-toggle" onclick="toggleChat()" aria-label="Abrir asistente">💬</button>
+  <button class="chat-toggle" onclick="toggleChat()" aria-label="Abrir chat">✦</button>
 
-  <!-- Modal para detalles de producto -->
-  <div id="productoModal" class="modal">
-    <div class="modal-content producto-detail">
-      <span class="close-modal" onclick="cerrarModalProducto()">&times;</span>
-      <div id="producto-detalle"></div>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <p>© 2026 RedNatura - Todos los derechos reservados</p>
-    <p>Teléfono: 5555070734</p>
-  </footer>
-
-  <!-- Scripts -->
-  <script src="js/productos.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/sucursales.js"></script>
-  <script src="js/chatbot.js"></script>
+  <script src="js/productos.js"></script><script src="js/sucursales.js"></script><script src="js/app.js"></script><script src="js/chatbot.js"></script>
 </body>
 </html>

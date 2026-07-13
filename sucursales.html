@@ -1,43 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sucursales — RedNatura</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Encuentra una sucursal RedNatura cerca de ti.">
+  <title>Sucursales | RedNatura</title><link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <nav class="navbar">
-    <div class="container">
-      <div class="logo">
-        <img src="img/logo.png" alt="RedNatura" class="logo-img">
-        <div class="logo-text">🌿 RedNatura</div>
-      </div>
-      <ul class="nav-links">
-        <li><a href="index.html">Inicio</a></li>
-        <li><a href="index.html#productos">Productos</a></li>
-        <li><a href="sucursales.html" aria-current="page">Sucursales</a></li>
-        <li><a href="contacto.html">Contacto</a></li>
-      </ul>
-    </div>
-  </nav>
-
-  <main class="sucursales" role="main">
-    <div class="container">
-      <h2>Todas nuestras Sucursales</h2>
-      <p>Encuentra la sucursal más cercana a ti. Haz clic en una para más información o contáctala por WhatsApp.</p>
-
+  <nav class="navbar" aria-label="Navegación principal"><div class="container">
+    <a class="logo" href="index.html"><img src="img/logo.png" alt="" class="logo-img"><span><span class="logo-text">RedNatura</span><span class="brand-note">Bienestar natural</span></span></a>
+    <ul class="nav-links"><li><a href="index.html">Inicio</a></li><li><a href="index.html#productos">Productos</a></li><li><a href="sucursales.html" aria-current="page">Sucursales</a></li><li><a href="contacto.html">Contacto</a></li></ul>
+  </div></nav>
+  <main>
+    <section class="page-hero"><div class="container"><span class="hero-kicker">Red de atención nacional</span><h1>Bienestar más cerca de ti.</h1><p>Explora nuestras ubicaciones, identifica tu ciudad y consulta directamente por WhatsApp antes de visitar una sucursal.</p><div class="hero-actions"><a class="cta-btn cta-primary" href="#directorio">Ver directorio</a><a class="cta-btn cta-secondary" href="contacto.html">Solicitar orientación</a></div></div></section>
+    <section id="directorio" class="sucursales"><div class="container">
+      <div class="section-heading"><div><span class="section-kicker">Directorio RedNatura</span><h2>Nuestras sucursales.</h2></div><p>Selecciona la ubicación que te convenga y recibe información sobre atención y productos disponibles.</p></div>
       <div id="sucursales-grid" class="sucursales-grid"></div>
-    </div>
+    </div></section>
   </main>
-
-  <footer class="footer">
-    <p>© 2026 RedNatura - Todos los derechos reservados</p>
-  </footer>
-
-  <script src="js/sucursales.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => cargarSucursales(true));
-  </script>
+  <footer class="footer"><p>© 2026 RedNatura · Atención cercana en México</p></footer>
+  <script src="js/sucursales.js"></script><script>document.addEventListener('DOMContentLoaded',()=>cargarSucursales(true));</script>
 </body>
 </html>

@@ -1,175 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Detalle del Producto - RedNatura</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Conoce detalles, beneficios, ingredientes y precio de tu producto RedNatura.">
+  <title>Detalle de producto | RedNatura</title><link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="container">
-      <div class="logo">
-        <img src="img/logo.png" alt="Logo RedNatura" class="logo-img" style="height: 50px; margin-right: 1rem;">
-        <div>
-          <div class="logo-text">🌿 RedNatura</div>
-          <p>Suplementos alimenticios naturales</p>
-        </div>
-      </div>
-      <ul class="nav-links">
-        <li><a href="index.html#bienvenida">Inicio</a></li>
-        <li><a href="index.html#productos">Productos</a></li>
-        <li><a href="sucursales.html">Sucursales</a></li>
-        <li><a href="index.html#contacto">Contacto</a></li>
-        <li><a href="#" onclick="toggleChat(); return false;" class="help-link">❓ Ayuda</a></li>
-      </ul>
-    </div>
-  </nav>
-
-  <!-- Contenido del producto -->
-  <section class="productos">
-    <div class="container">
-      <div id="producto-detalle" class="producto-detail"></div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <p>© 2026 RedNatura - Todos los derechos reservados | Representante: Fabiola</p>
-  </footer>
-
-  <!-- Chatbot -->
-  <div id="chatbot" class="chatbot-container hidden">
-    <div class="chatbot-header">
-      <h3>🤖 Asistente RedNatura</h3>
-      <button class="close-btn" onclick="toggleChat()">×</button>
-    </div>
-    <div id="chat-messages" class="chat-messages"></div>
-    <div class="chat-input-area">
-      <input id="chat-input" type="text" placeholder="Escribe tu pregunta..." onkeypress="handleChatInput(event)">
-      <button onclick="sendMessage()">Enviar</button>
-    </div>
-  </div>
-
-  <button class="chat-toggle" onclick="toggleChat()" title="Abrir chat">💬</button>
-
-  <!-- Modal de Registro -->
-  <div id="registro-modal" class="modal hidden">
-    <div class="modal-content">
-      <button class="close-modal" onclick="cerrarRegistro()">×</button>
-      <h2>📝 Registro de Interés</h2>
-      <form id="registro-form" name="registro-interes" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="return enviarFormulario(event)">
-        <input type="hidden" name="form-name" value="registro-interes">
-        <p class="hidden" aria-hidden="true"><label>No llenar: <input name="bot-field"></label></p>
-        <label><strong>Nombre:</strong></label>
-        <input type="text" name="nombre" placeholder="Tu nombre" required>
-
-        <label><strong>Apellidos:</strong></label>
-        <input type="text" name="apellidos" placeholder="Tus apellidos" required>
-
-        <label><strong>Teléfono:</strong></label>
-        <input type="tel" name="telefono" placeholder="10 dígitos (ej: 5555070734)" required>
-
-        <label><strong>Email:</strong></label>
-        <input type="email" name="email" placeholder="tu@email.com" required>
-
-        <label><strong>Lugar de nacimiento:</strong></label>
-        <input type="text" name="lugar" placeholder="Ciudad o Estado" required>
-
-        <label><strong>Fecha de nacimiento:</strong></label>
-        <input type="date" name="fecha" required>
-
-        <label><strong>Producto/Sucursal de interés:</strong></label>
-        <input type="text" id="tipo" name="tipo" placeholder="Producto o sucursal" readonly style="background: #f0f0f0; cursor: not-allowed;">
-
-        <label><strong>Mensaje adicional:</strong></label>
-        <textarea name="mensaje" placeholder="Pregunta o comentario (opcional)" rows="3"></textarea>
-
-        <button type="submit" class="btn-submit">📧 Enviar Formulario</button>
-      </form>
-      <div id="mensaje-confirmacion"></div>
-    </div>
-  </div>
-
-  <!-- Scripts -->
-  <script src="js/productos.js"></script>
-  <script src="js/sucursales.js"></script>
-  <script src="js/chatbot.js"></script>
-  <script src="js/form-handler.js"></script>
-  <script>
-    // Obtener el ID desde la URL
-    const params = new URLSearchParams(window.location.search);
-    const id = parseInt(params.get("id"));
-    const prod = productos.find(p => p.id === id);
-
-    const detalleDiv = document.getElementById("producto-detalle");
-
-    if (prod) {
-      const tieneDescuento = prod.precio > 350;
-      const precioDescuento = tieneDescuento ? Math.round(prod.precio * 0.7) : null;
-      const precioParaContacto = precioDescuento !== null ? precioDescuento : prod.precio;
-
-      detalleDiv.innerHTML = `
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;">
-          <!-- Imagen izquierda -->
-          <div style="text-align: center;">
-            <img src="${prod.imagen}" alt="${prod.nombre}" style="max-width: 100%; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); object-fit:contain;" onerror="this.src='img/placeholder.png'">
-            ${tieneDescuento ? `<p style="margin-top: 2rem; background: linear-gradient(135deg, #ffd89b 0%, #fff5d0 100%); color: #d84315; padding: 1rem; border-radius: 8px; font-weight: bold;">🎉 Precio especial: $${precioDescuento.toLocaleString('es-MX')}</p>` : ''}
-          </div>
-
-          <!-- Detalles derecha -->
-          <div>
-            <h2 style="color: #2c3e7f; margin-bottom: 1rem; font-size: 2.2rem;">${prod.nombre}</h2>
-            
-            <div style="background: #f0f7ff; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
-              <p style="font-size: 1.1rem; color: #666; margin-bottom: 1rem;"><strong>Presentación:</strong> ${prod.presentacion}</p>
-              <p style="font-size: 1rem; color: #666; line-height: 1.8;">${prod.descripcionLarga}</p>
-            </div>
-
-            <div style="margin: 2rem 0;">
-              <h3 style="color: #2c3e7f; margin-bottom: 0.8rem;">💰 Precio</h3>
-              <p style="font-size: 2rem; font-weight: bold; color: #3498db; margin-bottom: 0.5rem;">$${prod.precio.toLocaleString('es-MX')}</p>
-              ${tieneDescuento ? `<p style="font-size: 1.3rem; color: #27ae60; font-weight: bold;">💚 Con 30% DESC: $${precioDescuento.toLocaleString('es-MX')}</p>` : ''}
-            </div>
-
-            <div style="display:flex;gap:8px;flex-direction:column;">
-              <button class="btn" onclick="window.location.href='contacto.html?producto=${encodeURIComponent(prod.nombre)}&precio=${encodeURIComponent(precioParaContacto)}'" style="width:100%; padding:12px;">📩 Pedir información</button>
-              <a href="https://wa.me/525555070734?text=Estoy%20interesado%20en%20${encodeURIComponent(prod.nombre)}%20-%20$${encodeURIComponent(precioParaContacto)}" target="_blank" rel="noopener" class="btn btn-whatsapp" style="text-align:center;justify-content:center;">💬 Consultar por WhatsApp</a>
-            </div>
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 4rem;">
-          <!-- Ingredientes -->
-          <div>
-            <h3 style="color: #2c3e7f; margin-bottom: 1rem; font-size: 1.3rem;">🧪 Ingredientes</h3>
-            <ul style="list-style: none; padding: 0;">
-              ${prod.ingredientes.map(i => `<li style="padding: 0.5rem 0; color: #666; border-bottom: 1px solid #e0e0e0;">✓ ${i}</li>`).join('')}
-            </ul>
-          </div>
-
-          <!-- Beneficios -->
-          <div>
-            <h3 style="color: #2c3e7f; margin-bottom: 1rem; font-size: 1.3rem;">⭐ Beneficios</h3>
-            <ul style="list-style: none; padding: 0;">
-              ${prod.beneficios.map(b => `<li style="padding: 0.5rem 0; color: #666; border-bottom: 1px solid #e0e0e0;">✓ ${b}</li>`).join('')}
-            </ul>
-          </div>
-        </div>
-
-        <div style="margin-top: 3rem; background: #f8f9fa; padding: 2rem; border-radius: 8px;">
-          <h3 style="color: #2c3e7f; margin-bottom: 1rem; font-size: 1.3rem;">📋 Modo de Uso</h3>
-          <p style="color: #666; font-size: 1.1rem; line-height: 1.8;">${prod.modoUso}</p>
-        </div>
-      `;
-
-      // Establecer el tipo de producto en el formulario
-      const tipoInput = document.getElementById('tipo');
-      if (tipoInput) tipoInput.value = prod.nombre;
-    } else {
-      detalleDiv.innerHTML = "<p style='text-align: center; color: #666; padding: 2rem;'>Producto no encontrado.</p>";
-    }
-  </script>
+  <nav class="navbar" aria-label="Navegación principal"><div class="container">
+    <a class="logo" href="index.html"><img src="img/logo.png" alt="" class="logo-img"><span><span class="logo-text">RedNatura</span><span class="brand-note">Bienestar natural</span></span></a>
+    <ul class="nav-links"><li><a href="index.html">Inicio</a></li><li><a href="index.html#productos">Productos</a></li><li><a href="sucursales.html">Sucursales</a></li><li><a href="contacto.html">Contacto</a></li><li><a href="#" onclick="toggleChat();return false;" class="help-link">Asesoría</a></li></ul>
+  </div></nav>
+  <main class="detail-page"><div class="container"><div id="producto-detalle" class="producto-detail"></div></div></main>
+  <footer class="footer"><p>© 2026 RedNatura · Compra informada, atención cercana</p></footer>
+  <div id="chatbot" class="chatbot-container hidden"><div class="chatbot-header"><h3>Asistente RedNatura</h3><button class="close-btn" onclick="toggleChat()" aria-label="Cerrar chat">×</button></div><div id="chat-messages" class="chat-messages"></div><div class="chat-input-area"><input id="chat-input" type="text" placeholder="Escribe tu pregunta..." onkeypress="handleChatInput(event)"><button onclick="sendMessage()">Enviar</button></div></div>
+  <button class="chat-toggle" onclick="toggleChat()" aria-label="Abrir chat">✦</button>
+  <script src="js/productos.js"></script><script src="js/sucursales.js"></script><script src="js/producto-detalle.js"></script><script src="js/chatbot.js"></script>
 </body>
 </html>
