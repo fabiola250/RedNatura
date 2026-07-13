@@ -106,13 +106,14 @@
     if (prod) {
       const tieneDescuento = prod.precio > 350;
       const precioDescuento = tieneDescuento ? Math.round(prod.precio * 0.7) : null;
+      const precioParaContacto = precioDescuento !== null ? precioDescuento : prod.precio;
 
       detalleDiv.innerHTML = `
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;">
           <!-- Imagen izquierda -->
           <div style="text-align: center;">
             <img src="${prod.imagen}" alt="${prod.nombre}" style="max-width: 100%; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); object-fit:contain;" onerror="this.src='img/placeholder.png'">
-            ${tieneDescuento ? `<p style="margin-top: 2rem; background: linear-gradient(135deg, #ffd89b 0%, #fff5d0 100%); color: #d84315; padding: 1rem; border-radius: 8px; font-weight: bold;">💚 30% OFF - Oferta por tiempo limitado</p>` : ''}
+            ${tieneDescuento ? `<p style="margin-top: 2rem; background: linear-gradient(135deg, #ffd89b 0%, #fff5d0 100%); color: #d84315; padding: 1rem; border-radius: 8px; font-weight: bold;">🎉 Precio especial: $${precioDescuento.toLocaleString('es-MX')}</p>` : ''}
           </div>
 
           <!-- Detalles derecha -->
@@ -131,8 +132,8 @@
             </div>
 
             <div style="display:flex;gap:8px;flex-direction:column;">
-              <button class="btn" onclick="window.location.href='contacto.html?producto=${encodeURIComponent(prod.nombre)}&precio=${encodeURIComponent(prod.precio)}'" style="width:100%; padding: 1rem; font-size: 1.1rem; margin-bottom: 0.5rem;">💚 Estoy interesado</button>
-              <a href="https://wa.me/5555070734?text=Estoy%20interesado%20en%20${encodeURIComponent(prod.nombre)}%20-%20$${prod.precio}" target="_blank" class="btn btn-whatsapp" style="text-align:center; padding:1rem;">💬 Consultar por WhatsApp</a>
+              <button class="btn" onclick="window.location.href='contacto.html?producto=${encodeURIComponent(prod.nombre)}&precio=${encodeURIComponent(precioParaContacto)}'" style="width:100%; padding:12px;">📩 Pedir información</button>
+              <a href="https://wa.me/5555070734?text=Estoy%20interesado%20en%20${encodeURIComponent(prod.nombre)}%20-%20$${encodeURIComponent(precioParaContacto)}" target="_blank" class="btn btn-whatsapp" style="text-align:center;">💬 WhatsApp</a>
             </div>
           </div>
         </div>
