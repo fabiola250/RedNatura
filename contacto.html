@@ -8,10 +8,10 @@
 <body>
   <nav class="navbar" aria-label="Navegación principal"><div class="container">
     <a class="logo" href="index.html"><img src="img/logo.png" alt="" class="logo-img"><span><span class="logo-text">RedNatura</span><span class="brand-note">Bienestar natural</span></span></a>
-    <ul class="nav-links"><li><a href="index.html">Inicio</a></li><li><a href="index.html#productos">Productos</a></li><li><a href="sucursales.html">Sucursales</a></li><li><a href="contacto.html">Contacto</a></li><li><a href="#" onclick="toggleChat();return false;" class="help-link">Asesoría</a></li></ul>
+    <ul class="nav-links"><li><a href="index.html">Inicio</a></li><li><a href="index.html#productos">Productos</a></li><li><a href="sucursales.html">Sucursales</a></li><li><a href="contacto.html">Contacto</a></li></ul>
   </div></nav>
   <main>
-    <section class="page-hero"><div class="container"><span class="hero-kicker">Estamos para escucharte</span><h1>Conversemos sobre tu bienestar.</h1><p>Déjanos tus datos y cuéntanos qué necesitas. Te contactaremos lo antes posible.</p></div></section>
+    <section class="page-hero"><div class="container"><span class="hero-kicker">Estamos para escucharte</span><h1>Conversemos sobre tu bienestar.</h1><p>Déjanos tus datos y cuéntanos qué necesitas. Te contactamos para orientarte sobre productos, precios o sucursales.</p></div></section>
     <section class="contact-page"><div class="container contact-layout">
       <aside class="contact-aside"><span class="sales-card-label">Atención directa</span><h2>Una respuesta clara y cercana.</h2><p>Elige el canal que prefieras. Nuestro equipo te ayuda a resolver tus dudas sin complicaciones.</p>
         <a class="contact-method" href="https://wa.me/525555070734?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20RedNatura" target="_blank" rel="noopener"><strong>WhatsApp</strong><small>55 5507 0734 · Respuesta directa</small></a>
@@ -20,8 +20,16 @@
       </aside>
       <section class="contact-form-card" aria-labelledby="contact-title"><h2 id="contact-title">Cuéntanos cómo ayudarte.</h2><p class="lead">Completa el formulario y te contactaremos lo antes posible.</p>
         <div id="prefill-display"></div>
-        <form id="contact-form" netlify>
+
+        <!-- Formsubmit AJAX: stays on the same page. Works from GitHub Pages. -->
+        <form id="contact-form" method="POST" action="https://formsubmit.co/ajax/fabiola250204@gmail.com" aria-label="Formulario de contacto">
+          <!-- Honeypot for bots -->
           <p hidden><label>No llenar: <input name="bot-field"></label></p>
+
+          <!-- Formsubmit settings -->
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_subject" value="Nuevo mensaje desde web RedNatura">
+
           <div class="field"><label for="nombre">Nombre completo</label><input type="text" name="nombre" id="nombre" placeholder="Tu nombre" required autocomplete="name"></div>
           <div class="field"><label for="correo">Correo electrónico</label><input type="email" name="correo" id="correo" placeholder="tu@correo.com" required autocomplete="email"></div>
           <div class="field full"><label for="telefono">Teléfono</label><input type="tel" name="telefono" id="telefono" placeholder="55 5507 0734" inputmode="tel" autocomplete="tel" required></div>
@@ -29,7 +37,10 @@
           <div class="field full"><label for="fecha_nacimiento">Fecha de nacimiento</label><input type="date" name="fecha_nacimiento" id="fecha_nacimiento" required></div>
           <div class="field full"><label for="asunto">Asunto</label><input type="text" name="asunto" id="asunto" placeholder="Ej. Consulta sobre un producto" required></div>
           <div class="field full"><label for="mensaje">Mensaje</label><textarea name="mensaje" id="mensaje" placeholder="Escribe tu mensaje..." required></textarea></div>
+
           <input type="hidden" name="producto" id="producto-hidden" value="">
+          <input type="hidden" name="precio" id="precio-hidden" value="">
+
           <div class="form-actions"><button type="submit" class="btn-send">Enviar mensaje</button></div>
           <div id="flash-messages" class="full"></div>
         </form>
@@ -37,8 +48,54 @@
     </div></section>
   </main>
   <footer class="footer"><p>© 2026 RedNatura · Estamos para ayudarte</p></footer>
-  <div id="chatbot" class="chatbot-container hidden"><div class="chatbot-header"><h3>Asistente RedNatura</h3><button class="close-btn" onclick="toggleChat()" aria-label="Cerrar chat">×</button></div><div id="chat-messages" class="chat-messages"></div><div class="chat-input-area"><input id="chat-input" type="text" placeholder="Escribe tu pregunta..." onkeypress="handleChatInput(event)"><button onclick="sendMessage()">Enviar</button></div></div>
-  <button class="chat-toggle" onclick="toggleChat()" aria-label="Abrir chat">✦</button>
+
+  <!-- Include prefill helper if present; harmless if file missing -->
   <script src="js/contacto.js"></script>
+
+  <script>
+    // Inline AJAX submit to Formsubmit (works on GitHub Pages). Keeps user on same page.
+    (function(){
+      const form = document.getElementById('contact-form');
+      const flash = document.getElementById('flash-messages');
+
+      function showFlash(html, type='success'){
+        if(!flash) return;
+        flash.innerHTML = `<div class="flash ${type}">${html}</div>`;
+      }
+
+      if(!form) return;
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if(submitBtn) submitBtn.disabled = true;
+
+        // honeypot
+        const bot = form.querySelector('input[name="bot-field"]');
+        if(bot && bot.value){ if(submitBtn) submitBtn.disabled = false; return; }
+
+        const data = new FormData(form);
+        const body = new URLSearchParams();
+        for(const pair of data.entries()) body.append(pair[0], pair[1]);
+
+        fetch(form.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body.toString()
+        }).then(res => {
+          if(!res.ok) throw new Error('Network response was not ok');
+          return res.json();
+        }).then(json => {
+          showFlash('¡Mensaje enviado! Gracias, te contactaremos pronto.', 'success');
+          form.reset();
+          const prefill = document.getElementById('prefill-display'); if(prefill) prefill.innerHTML = '';
+          if(submitBtn) setTimeout(()=> submitBtn.disabled = false, 2000);
+        }).catch(err => {
+          console.error('Formsubmit error', err);
+          showFlash('Ocurrió un error al enviar. Intenta de nuevo más tarde.', 'error');
+          if(submitBtn) submitBtn.disabled = false;
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
