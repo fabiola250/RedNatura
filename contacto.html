@@ -66,31 +66,37 @@
       <p class="lead">¿Tienes dudas o deseas realizar un pedido? Completa el formulario y nos pondremos en contacto.</p>
     </header>
 
-    <form aria-label='Formulario de contacto' id='contact-form' method='POST' name='contacto'>
-      <input type="hidden" name="form-name" value="contacto">
-      <p hidden><label>No llenar: <input name="bot-field"></label></p>
-      <!-- Campos -->
-      <input type="text" name="nombre" id="nombre" placeholder="Nombre completo" required autocomplete="name">
-      <input type="email" name="correo" id="correo" placeholder="Correo electrónico" required autocomplete="email">
+<form aria-label="Formulario de contacto" 
+      id="contact-form" 
+      method="POST" 
+      name="contacto" 
+      data-netlify="true" 
+      netlify-honeypot="bot-field">
+      
+  <input type="hidden" name="form-name" value="contacto">
+  <p hidden><label>No llenar: <input name="bot-field"></label></p>
+  
+  <!-- Campos -->
+  <input type="text" name="nombre" id="nombre" placeholder="Nombre completo" required autocomplete="name">
+  <input type="email" name="correo" id="correo" placeholder="Correo electrónico" required autocomplete="email">
 
-      <input class="full" type="tel" name="telefono" id="telefono" placeholder="Teléfono" inputmode="tel" autocomplete="tel" required>
-      <input class="full" type="text" name="lugar_nacimiento" id="lugar_nacimiento" placeholder="Lugar de nacimiento" required>
+  <input class="full" type="tel" name="telefono" id="telefono" placeholder="Teléfono" inputmode="tel" autocomplete="tel" required>
+  <input class="full" type="text" name="lugar_nacimiento" id="lugar_nacimiento" placeholder="Lugar de nacimiento" required>
 
-      <input class="full" type="date" name="fecha_nacimiento" id="fecha_nacimiento" placeholder="Fecha de nacimiento" required>
+  <input class="full" type="date" name="fecha_nacimiento" id="fecha_nacimiento" placeholder="Fecha de nacimiento" required>
 
-      <input class="full" type="text" name="asunto" id="asunto" placeholder="Asunto (ej. Consulta sobre PROBI GO!)" required>
+  <input class="full" type="text" name="asunto" id="asunto" placeholder="Asunto (ej. Consulta sobre PROBI GO!)" required>
 
-      <textarea class="full" name="mensaje" id="mensaje" placeholder="Escribe tu mensaje..." required></textarea>
+  <textarea class="full" name="mensaje" id="mensaje" placeholder="Escribe tu mensaje..." required></textarea>
 
-      <!-- campo oculto para producto preseleccionado -->
-      <input type="hidden" name="producto" id="producto-hidden" value="">
+  <!-- campo oculto para producto preseleccionado -->
+  <input type="hidden" name="producto" id="producto-hidden" value="">
 
-      <div class="form-actions">
-        <button type="submit" class="btn-send" aria-label="Enviar mensaje">Enviar mensaje</button>
-      </div>
+  <div class="form-actions">
+    <button type="submit" class="btn-send" aria-label="Enviar mensaje">Enviar mensaje</button>
+  </div>
+</form>
 
-      <div id="flash-messages" class="full"></div>
-    </form>
 
     <div id="prefill-display" style="margin-top:14px"></div>
 
