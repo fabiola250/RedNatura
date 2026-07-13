@@ -8,9 +8,9 @@
   <!-- Estilos mínimos independientes para que funcione sin tocar CSS global -->
   <style>
     :root{
-      --accent:#2a9d8f;
-      --accent-dark:#1e7a66;
-      --bg:#f7faf9;
+      --blue-600:#2563eb;
+      --blue-500:#3498db;
+      --bg:#f7fafc;
       --card:#ffffff;
       --muted:#6b7280;
       --radius:12px;
@@ -18,9 +18,9 @@
       font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
 
-    body{ margin:0; background:linear-gradient(180deg,#f0f6f5 0%, #fbfffe 100%); color:#0f172a; -webkit-font-smoothing:antialiased; padding:24px; box-sizing:border-box;}
+    body{ margin:0; background:linear-gradient(180deg,#f0f6ff 0%, #fbffff 100%); color:#0f172a; -webkit-font-smoothing:antialiased; padding:24px; box-sizing:border-box;}
     .contact-section{ max-width:920px; margin:28px auto; background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); padding:28px; }
-    h2{ margin:0 0 12px 0; color:var(--accent-dark); }
+    h2{ margin:0 0 12px 0; color:var(--blue-600); }
     p.lead{ color:var(--muted); margin-top:0; }
 
     form#contact-form{ display:grid; gap:12px; grid-template-columns: 1fr 1fr; }
@@ -31,14 +31,14 @@
     }
     textarea{ min-height:140px; resize:vertical; }
     .btn-send{
-      background: linear-gradient(180deg,var(--accent),var(--accent-dark)); color:white; border:none; padding:12px 16px; border-radius:10px;
+      background: linear-gradient(180deg,var(--blue-500),var(--blue-600)); color:white; border:none; padding:12px 16px; border-radius:10px;
       cursor:pointer; font-weight:600; font-size:15px;
     }
     .btn-send:active{ transform:translateY(1px); }
     .contact-meta{ display:flex; gap:12px; align-items:center; color:var(--muted); font-size:14px; margin-top:8px; }
 
     .flash { margin-top:12px; padding:10px 12px; border-radius:8px; display:none; }
-    .flash.success{ background:#ecfdf5; color:#064e3b; border:1px solid #bbf7d0; display:block; }
+    .flash.success{ background:#ecf2ff; color:#0b3a80; border:1px solid #cfe0ff; display:block; }
     .flash.error{ background:#fff1f2; color:#9f1239; border:1px solid #fecaca; display:block; }
 
     /* Responsive */
@@ -48,10 +48,10 @@
     }
 
     /* Pequeños estilos para enlaces dentro del flash */
-    .flash a{ color:var(--accent); text-decoration:underline; }
+    .flash a{ color:var(--blue-600); text-decoration:underline; }
 
     /* resaltado del producto preseleccionado */
-    .prefill-box{ background:#f8fffb; border:1px solid #ddf6ee; padding:10px 12px; border-radius:8px; color:#065f46; font-weight:700; }
+    .prefill-box{ background:#f0f7ff; border:1px solid #dbeeff; padding:10px 12px; border-radius:8px; color:#0b3a80; font-weight:700; }
   </style>
 </head>
 <body>
@@ -62,8 +62,9 @@
       <p class="lead">¿Tienes dudas o deseas realizar un pedido? Completa el formulario y nos pondremos en contacto.</p>
     </header>
 
-    <!-- Usamos Formsubmit.co para enviar el formulario directamente al correo fabiola250204@gmail.com -->
-    <form id="contact-form" method="POST" action="https://formsubmit.co/fabiola250204@gmail.com" aria-label="Formulario de contacto">
+    <!-- Netlify form: name + data-netlify attribute -->
+    <form id="contact-form" name="contact" method="POST" data-netlify="true" action="/contacto.html?success=1" aria-label="Formulario de contacto">
+      <input type="hidden" name="form-name" value="contact">
       <!-- Campos -->
       <input type="text" name="nombre" id="nombre" placeholder="Nombre completo" required autocomplete="name">
       <input type="email" name="correo" id="correo" placeholder="Correo electrónico" required autocomplete="email">
@@ -77,22 +78,17 @@
 
       <textarea class="full" name="mensaje" id="mensaje" placeholder="Escribe tu mensaje..." required></textarea>
 
-      <!-- campo oculto para producto preseleccionado -->
+      <!-- campo oculto para producto preseleccionado y precio -->
       <input type="hidden" name="producto" id="producto-hidden" value="">
+      <input type="hidden" name="precio" id="precio-hidden" value="">
 
       <div class="full" style="display:flex; gap:10px; align-items:center; justify-content:space-between;">
         <div style="display:flex; gap:8px; align-items:center;">
-          <input type="checkbox" id="consent" name="consent" required>
-          <label for="consent" style="font-size:13px; color:var(--muted)">Acepto que mis datos sean usados para contactarme.</label>
+          <!-- removed consent checkbox as requested -->
         </div>
 
         <button type="submit" class="btn-send" aria-label="Enviar mensaje">Enviar mensaje</button>
       </div>
-
-      <!-- Inputs especiales para Formsubmit: desactivar captcha y redirigir a la misma página con success -->
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_subject" value="Nuevo mensaje desde web RedNatura">
-      <input type="hidden" name="_next" value="/contacto.html?success=1">
 
       <div id="flash-messages" class="full"></div>
     </form>
@@ -102,6 +98,7 @@
     <div class="contact-meta" aria-hidden="false" style="margin-top:16px;">
       <div>📞 <strong>Tel:</strong> <a href="tel:+52-5555070734">5555070734</a></div>
       <div>✉️ <strong>Email:</strong> <a href="mailto:fabiola250204@gmail.com">fabiola250204@gmail.com</a></div>
+      <div><a class="btn-whatsapp" href="https://wa.me/525555070734?text=Hola%20RedNatura,%20quiero%20informaci%C3%B3n" target="_blank">💬 WhatsApp</a></div>
     </div>
   </main>
 
@@ -115,7 +112,6 @@
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('success') === '1'){
       showFlashHtml('¡Mensaje enviado! Gracias, te contactaremos pronto.', 'success');
-      // limpiar parámetros de URL para que no se muestre otra vez si recarga
       if (history.replaceState) {
         const url = new URL(window.location);
         url.searchParams.delete('success');
@@ -133,6 +129,9 @@
         const prefill = document.getElementById('producto-hidden');
         if (prefill) prefill.value = producto;
 
+        const precioHidden = document.getElementById('precio-hidden');
+        if (precioHidden && precio) precioHidden.value = precio;
+
         const caja = document.getElementById('prefill-display');
         caja.innerHTML = `<div class="prefill-box">Interesado en: ${producto}${precio? ' — ' + precio : ''}</div>`;
       }
@@ -144,15 +143,43 @@
       if (producto && mensajeTextarea) mensajeTextarea.value = `Hola, estoy interesada/o en el producto: ${producto}\nPrecio: ${params.get('precio') || ''}\nPor favor contáctenme.`;
     });
 
-    // Validación simple antes de enviar
+    // Submit handler: POST via fetch to ensure Netlify receives AJAX submissions as well
     document.getElementById('contact-form').addEventListener('submit', function(e){
-      const consent = document.getElementById('consent');
-      if (!consent.checked){
-        e.preventDefault();
-        showFlashHtml('Debes aceptar el uso de tus datos para continuar.', 'error');
-        return;
+      e.preventDefault();
+      const form = e.target;
+      const data = new FormData(form);
+
+      // build urlencoded body
+      const body = new URLSearchParams();
+      for (const pair of data.entries()) {
+        body.append(pair[0], pair[1]);
       }
-      // Dejar que el formulario haga POST hacia Formsubmit
+
+      fetch(form.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body.toString()
+      }).then(response => {
+        if (response.ok) {
+          // limpia el formulario y muestra mensaje de éxito
+          form.reset();
+          showFlashHtml('¡Mensaje enviado! Gracias, te contactaremos pronto.', 'success');
+          // limpiar params en URL
+          if (history.replaceState) {
+            const url = new URL(window.location);
+            url.searchParams.delete('producto');
+            url.searchParams.delete('precio');
+            history.replaceState({}, document.title, url.pathname + url.search);
+          }
+        } else {
+          showFlashHtml('Ocurrió un error al enviar el formulario. Intenta nuevamente.', 'error');
+          console.error('Netlify form submit error status:', response.status);
+        }
+      }).catch(err => {
+        showFlashHtml('Ocurrió un error al enviar el formulario. Verifica tu conexión.', 'error');
+        console.error('Netlify form submit error:', err);
+      });
+
     });
   </script>
 
