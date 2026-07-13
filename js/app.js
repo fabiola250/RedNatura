@@ -42,9 +42,9 @@ function filtrarProductos(filtro, boton = null) {
           <div class="precio">${formatMoneda(precioNum)}</div>
           ${tieneDescuento ? `<div class="precio-descuento">Ahora ${formatMoneda(precioDescuento)}</div>` : ''}
         </div>
-        <div style="display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap;">
+        <div class="producto-actions">
           <button class="btn" onclick="verDescripcion(${producto.id})">📄 Ver detalles</button>
-          <a class="btn btn-outline" href="https://wa.me/52${'5555070734'}?text=${encodeURIComponent('Estoy interesado en ' + producto.nombre)}" target="_blank">💬 WhatsApp</a>
+          <a class="btn btn-whatsapp" href="https://wa.me/52${'5555070734'}?text=${encodeURIComponent('Hola, estoy interesado en ' + producto.nombre + '. ¿Me pueden dar más información?')}" target="_blank" rel="noopener">💬 Consultar por WhatsApp</a>
         </div>
       </div>
     `;
@@ -56,35 +56,6 @@ function filtrarProductos(filtro, boton = null) {
 // --- Función para abrir detalle de producto ---
 function verDescripcion(id) {
   window.location.href = `producto.html?id=${id}`;
-}
-
-// --- Renderizado de sucursales (compacto para home) ---
-function renderSucursales() {
-  const grid = document.getElementById('sucursales-grid');
-  if (!grid) return;
-
-  grid.innerHTML = '';
-
-  // Mostrar sólo unas pocas en la home para no ocupar espacio
-  const mostrar = (typeof sucursales !== 'undefined') ? sucursales.slice(0, 6) : [];
-
-  mostrar.forEach(sucursal => {
-    const nombre = sucursal.nombre || sucursal.ciudad || 'Sucursal';
-    const estado = sucursal.estado || 'Estado no especificado';
-
-    const card = document.createElement('div');
-    card.className = 'sucursal-card';
-
-    card.innerHTML = `
-      <h3>📍 ${nombre}</h3>
-      <p><strong>${estado}</strong></p>
-      <div style="margin-top:8px;">
-        <a class="btn" href="https://wa.me/52${'5555070734'}?text=${encodeURIComponent('Estoy interesado en la sucursal de ' + nombre)}" target="_blank">💬 WhatsApp</a>
-      </div>
-    `;
-
-    grid.appendChild(card);
-  });
 }
 
 // --- Generador automático de nombres de imagen ---
@@ -99,5 +70,4 @@ function generarImagen(nombre) {
 // --- Inicialización al cargar la página ---
 window.addEventListener('DOMContentLoaded', () => {
   filtrarProductos('todos');
-  renderSucursales();
 });
