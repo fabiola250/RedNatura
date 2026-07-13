@@ -19,7 +19,7 @@
       </div>
       <ul class="nav-links">
         <li><a href="#productos">Productos</a></li>
-        <li><a href="#sucursales">Sucursales</a></li>
+        <li><a href="sucursales.html">Sucursales</a></li>
         <li><a href="#contacto">Contacto</a></li>
         <li><a href="#" onclick="toggleChat(); return false;" class="help-link">❓ Ayuda</a></li>
       </ul>
@@ -27,29 +27,45 @@
   </nav>
 
   <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Bienvenido a RedNatura</h1>
-      <p>Tu salud es nuestra prioridad</p>
-      <div class="subtitulo">
-        Descubre nuestros suplementos naturales de alta calidad, formulados con los mejores ingredientes para mejorar tu bienestar
+  <section class="hero" id="bienvenida">
+    <div class="hero-shell">
+      <div class="hero-content">
+        <span class="hero-kicker">Bienestar natural · Atención personalizada</span>
+        <h1>Encuentra el apoyo natural que tu bienestar necesita</h1>
+        <p class="hero-lead">Te orientamos para elegir suplementos de calidad según tus objetivos, con atención cercana antes y después de tu compra.</p>
+        <div class="hero-actions">
+          <a class="cta-btn cta-primary" href="https://wa.me/525555070734?text=Hola%2C%20quiero%20recibir%20asesor%C3%ADa%20para%20elegir%20un%20producto%20RedNatura" target="_blank" rel="noopener">
+            <span aria-hidden="true">💬</span> Hablar por WhatsApp
+          </a>
+          <button class="cta-btn cta-secondary" onclick="document.getElementById('productos').scrollIntoView({behavior: 'smooth'})">
+            Ver productos
+          </button>
+        </div>
+        <div class="hero-trust" aria-label="Ventajas de comprar en RedNatura">
+          <span>✓ Asesoría personal</span>
+          <span>✓ Compra informada</span>
+          <span>✓ Sucursales en México</span>
+        </div>
       </div>
 
-      <!-- Tarjeta destacada hacia Sucursales (incluir en hero o justo después) -->
-      <div class="home-links" style="margin-top:18px;">
-        <a href="sucursales.html" class="card branch-card" aria-label="Ir a la página de sucursales">
-          <div class="branch-card__icon" aria-hidden="true">🏬</div>
-          <div class="branch-card__content">
-            <h3 class="branch-card__title">Sucursales</h3>
-            <p class="branch-card__subtitle">Encuentra la sucursal más cercana y sus horarios</p>
-          </div>
-          <div class="branch-card__cta">Ir</div>
+      <aside class="hero-sales-card" aria-label="Contacto y sucursales RedNatura">
+        <span class="sales-card-label">Estamos para ayudarte</span>
+        <h2>¿No sabes cuál elegir?</h2>
+        <p>Cuéntanos qué objetivo de bienestar tienes y recibe orientación directa por WhatsApp.</p>
+        <a class="whatsapp-card" href="https://wa.me/525555070734?text=Hola%2C%20necesito%20ayuda%20para%20elegir%20un%20suplemento" target="_blank" rel="noopener">
+          <span class="whatsapp-card__icon" aria-hidden="true">💬</span>
+          <span><strong>Asesoría por WhatsApp</strong><small>Respuesta directa: 55 5507 0734</small></span>
+          <span class="whatsapp-card__arrow" aria-hidden="true">→</span>
         </a>
-      </div>
-
-      <button class="cta-btn" onclick="document.getElementById('productos').scrollIntoView({behavior: 'smooth'})">
-        Explorar Productos
-      </button>
+        <a href="sucursales.html" class="branch-card" aria-label="Ver todas las sucursales RedNatura">
+          <span class="branch-card__icon" aria-hidden="true">⌖</span>
+          <span class="branch-card__content">
+            <strong class="branch-card__title">Encuentra tu sucursal</strong>
+            <small class="branch-card__subtitle">Consulta ubicaciones y atención por ciudad</small>
+          </span>
+          <span class="branch-card__cta">Ver todas</span>
+        </a>
+      </aside>
     </div>
   </section>
 
@@ -80,12 +96,16 @@
     </div>
   </section>
 
-  <!-- Sección Sucursales -->
-  <section id="sucursales" class="sucursales">
-    <div class="container">
-      <h2>Nuestras Sucursales</h2>
-      <p>Visítanos en cualquiera de nuestras ubicaciones</p>
-      <div id="sucursales-grid" class="sucursales-grid"></div>
+  <section id="sucursales" class="branch-spotlight">
+    <div class="container branch-spotlight__inner">
+      <div>
+        <span class="section-kicker">Atención cerca de ti</span>
+        <h2>RedNatura en distintas ciudades de México</h2>
+        <p>Abre nuestro directorio para encontrar la sucursal más conveniente y consultar directamente por WhatsApp.</p>
+      </div>
+      <a class="branch-spotlight__action" href="sucursales.html">
+        Explorar sucursales <span aria-hidden="true">→</span>
+      </a>
     </div>
   </section>
 
@@ -145,15 +165,5 @@
   <script src="js/app.js"></script>
   <script src="js/sucursales.js"></script>
   <script src="js/chatbot.js"></script>
-
-  <script>
-    // Al cargar la pagina, asegurarnos de renderizar sucursales (layout más completo) en el inicio
-    document.addEventListener('DOMContentLoaded', function(){
-      if (typeof cargarSucursales === 'function') {
-        // renderDedicado true para mostrar boton de whatsapp y pedir info
-        try { cargarSucursales(true); } catch(e){ console.warn('Error renderizando sucursales:', e); }
-      }
-    });
-  </script>
 </body>
 </html>

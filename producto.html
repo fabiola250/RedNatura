@@ -20,7 +20,7 @@
       <ul class="nav-links">
         <li><a href="index.html#bienvenida">Inicio</a></li>
         <li><a href="index.html#productos">Productos</a></li>
-        <li><a href="index.html#sucursales">Sucursales</a></li>
+        <li><a href="sucursales.html">Sucursales</a></li>
         <li><a href="index.html#contacto">Contacto</a></li>
         <li><a href="#" onclick="toggleChat(); return false;" class="help-link">❓ Ayuda</a></li>
       </ul>
@@ -59,7 +59,9 @@
     <div class="modal-content">
       <button class="close-modal" onclick="cerrarRegistro()">×</button>
       <h2>📝 Registro de Interés</h2>
-      <form id="registro-form" name="contact" method="POST" netlify onsubmit="return enviarFormulario(event)">
+      <form id="registro-form" name="registro-interes" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="return enviarFormulario(event)">
+        <input type="hidden" name="form-name" value="registro-interes">
+        <p class="hidden" aria-hidden="true"><label>No llenar: <input name="bot-field"></label></p>
         <label><strong>Nombre:</strong></label>
         <input type="text" name="nombre" placeholder="Tu nombre" required>
 
@@ -133,7 +135,7 @@
 
             <div style="display:flex;gap:8px;flex-direction:column;">
               <button class="btn" onclick="window.location.href='contacto.html?producto=${encodeURIComponent(prod.nombre)}&precio=${encodeURIComponent(precioParaContacto)}'" style="width:100%; padding:12px;">📩 Pedir información</button>
-              <a href="https://wa.me/5555070734?text=Estoy%20interesado%20en%20${encodeURIComponent(prod.nombre)}%20-%20$${encodeURIComponent(precioParaContacto)}" target="_blank" class="btn btn-whatsapp" style="text-align:center;">💬 WhatsApp</a>
+              <a href="https://wa.me/525555070734?text=Estoy%20interesado%20en%20${encodeURIComponent(prod.nombre)}%20-%20$${encodeURIComponent(precioParaContacto)}" target="_blank" rel="noopener" class="btn btn-whatsapp" style="text-align:center;justify-content:center;">💬 Consultar por WhatsApp</a>
             </div>
           </div>
         </div>

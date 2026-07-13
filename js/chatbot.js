@@ -199,7 +199,7 @@ function mostrarProductoChat(productoId) {
     botonesEl.appendChild(btnDetalles);
 
     const btnWhats = document.createElement('a');
-    btnWhats.className = 'btn menu-btn';
+    btnWhats.className = 'btn menu-btn btn-whatsapp';
     btnWhats.href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent('Estoy interesado en ' + prod.nombre)}`;
     btnWhats.target = '_blank';
     btnWhats.rel = 'noopener';
@@ -259,7 +259,7 @@ function seleccionarSucursal(nombre) {
   botonesEl.className = 'chat-menu';
 
   const btnWhats = document.createElement('a');
-  btnWhats.className = 'btn menu-btn';
+  btnWhats.className = 'btn menu-btn btn-whatsapp';
   btnWhats.href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent('Estoy interesado en la sucursal de ' + nombre)}`;
   btnWhats.target = '_blank';
   btnWhats.rel = 'noopener';
@@ -285,7 +285,7 @@ function mostrarContacto() {
   contactoEl.className = 'chat-menu';
 
   const btnWhats = document.createElement('a');
-  btnWhats.className = 'btn menu-btn';
+  btnWhats.className = 'btn menu-btn btn-whatsapp';
   btnWhats.href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent('Estoy interesado en RedNatura')}`;
   btnWhats.target = '_blank';
   btnWhats.rel = 'noopener';
