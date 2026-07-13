@@ -143,44 +143,7 @@
       if (producto && mensajeTextarea) mensajeTextarea.value = `Hola, estoy interesada/o en el producto: ${producto}\nPrecio: ${params.get('precio') || ''}\nPor favor contáctenme.`;
     });
 
-    // Submit handler: POST via fetch to ensure Netlify receives AJAX submissions as well
-    document.getElementById('contact-form').addEventListener('submit', function(e){
-      e.preventDefault();
-      const form = e.target;
-      const data = new FormData(form);
-
-      // build urlencoded body
-      const body = new URLSearchParams();
-      for (const pair of data.entries()) {
-        body.append(pair[0], pair[1]);
-      }
-
-      fetch(form.action, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: body.toString()
-      }).then(response => {
-        if (response.ok) {
-          // limpia el formulario y muestra mensaje de éxito
-          form.reset();
-          showFlashHtml('¡Mensaje enviado! Gracias, te contactaremos pronto.', 'success');
-          // limpiar params en URL
-          if (history.replaceState) {
-            const url = new URL(window.location);
-            url.searchParams.delete('producto');
-            url.searchParams.delete('precio');
-            history.replaceState({}, document.title, url.pathname + url.search);
-          }
-        } else {
-          showFlashHtml('Ocurrió un error al enviar el formulario. Intenta nuevamente.', 'error');
-          console.error('Netlify form submit error status:', response.status);
-        }
-      }).catch(err => {
-        showFlashHtml('Ocurrió un error al enviar el formulario. Verifica tu conexión.', 'error');
-        console.error('Netlify form submit error:', err);
-      });
-
-    });
+    // No JS submit handler: allow native POST to Netlify (fallback removed as requested)
   </script>
 
   <noscript>
