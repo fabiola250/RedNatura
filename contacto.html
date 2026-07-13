@@ -1,155 +1,175 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Contacto — RedNatura</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta name="description" content="Contacta al equipo RedNatura para resolver dudas sobre productos y sucursales.">
+        <title>Contacto | RedNatura</title>
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <nav class="navbar" aria-label="Navegación principal">
+            <div class="container">
+                <a class="logo" href="index.html">
+                    <img src="img/logo.png" alt="" class="logo-img">
+                    <span>
+                        <span class="logo-text">RedNatura</span>
+                        <span class="brand-note">Bienestar natural</span>
+                    </span>
+                </a>
+                <ul class="nav-links">
+                    <li>
+                        <a href="index.html">Inicio</a>
+                    </li>
+                    <li>
+                        <a href="index.html#productos">Productos</a>
+                    </li>
+                    <li>
+                        <a href="sucursales.html">Sucursales</a>
+                    </li>
+                    <li>
+                        <a href="contacto.html" aria-current="page">Contacto</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <main>
+            <section class="page-hero">
+                <div class="container">
+                    <span class="hero-kicker">Estamos para escucharte</span>
+                    <h1>Conversemos sobre tu bienestar.</h1>
+                    <p>Déjanos tus datos y cuéntanos qué necesitas. Te contactamos para orientarte sobre productos, precios o sucursales.</p>
+                </div>
+            </section>
+            <section class="contact-page">
+                <div class="container contact-layout">
+                    <aside class="contact-aside">
+                        <span class="sales-card-label">Atención directa</span>
+                        <h2>Una respuesta clara y cercana.</h2>
+                        <p>Elige el canal que prefieras. Nuestro equipo te ayuda a resolver tus dudas sin complicaciones.</p>
+                        <a class="contact-method" href="https://wa.me/525555070734?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20RedNatura" target="_blank" rel="noopener">
+                            <strong>WhatsApp</strong>
+                            <small>55 5507 0734 · Respuesta directa</small>
+                        </a>
+                        <a class="contact-method" href="mailto:fabiola250204@gmail.com">
+                            <strong>Correo electrónico</strong>
+                            <small>fabiola250204@gmail.com</small>
+                        </a>
+                        <a class="contact-method" href="sucursales.html">
+                            <strong>Visita una sucursal</strong>
+                            <small>Consulta nuestro directorio nacional</small>
+                        </a>
+                    </aside>
+                    <section class="contact-form-card" aria-labelledby="contact-title">
+                        <h2 id="contact-title">Cuéntanos cómo ayudarte.</h2>
+                        <p class="lead">Completa el formulario y te contactaremos lo antes posible.</p>
+                        <div id="prefill-display"></div>
 
-  <!-- Estilos mínimos independientes para que funcione sin tocar CSS global -->
-  <style>
-    :root{
-      --blue-600:#2563eb;
-      --blue-500:#3498db;
-      --bg:#f7fafc;
-      --card:#ffffff;
-      --muted:#6b7280;
-      --radius:12px;
-      --shadow: 0 6px 18px rgba(16,24,40,0.08);
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    }
+                        <!-- Formsubmit AJAX endpoint: stays on the same page; form will be submitted via JS to Formsubmit.co -->
+                        <form aria-label="Formulario de contacto" id="contact-form" method="POST" name="contacto" action="https://formsubmit.co/ajax/fabiola250204@gmail.com">
+                            <!-- Honeypot for bots -->
+                            <p hidden>
+                                <label>
+                                    No llenar: <input name="bot-field">
+                                </label>
+                            </p>
 
-    body{ margin:0; background:linear-gradient(180deg,#f0f6ff 0%, #fbffff 100%); color:#0f172a; -webkit-font-smoothing:antialiased; padding:24px; box-sizing:border-box;}
-    .contact-section{ max-width:920px; margin:28px auto; background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); padding:28px; }
-    h2{ margin:0 0 12px 0; color:var(--blue-600); }
-    p.lead{ color:var(--muted); margin-top:0; }
+                            <input type="hidden" name="_captcha" value="false">
+                            <input type="hidden" name="_subject" value="Nuevo mensaje desde web RedNatura">
 
-    form#contact-form{ display:grid; gap:12px; grid-template-columns: 1fr 1fr; }
-    form#contact-form .full { grid-column: 1 / -1; }
-    input, textarea, select{
-      width:100%; padding:12px 14px; border-radius:10px; border:1px solid #e6eef0; background:#fbffff; font-size:15px; box-sizing:border-box;
-      outline: none;
-    }
-    textarea{ min-height:140px; resize:vertical; }
-    .btn-send{
-      background: linear-gradient(180deg,var(--blue-500),var(--blue-600)); color:white; border:none; padding:12px 16px; border-radius:10px;
-      cursor:pointer; font-weight:600; font-size:15px;
-    }
-    .btn-send:active{ transform:translateY(1px); }
-    .contact-meta{ display:flex; gap:12px; align-items:center; color:var(--muted); font-size:14px; margin-top:8px; }
+                            <div class="field">
+                                <label for="nombre">Nombre completo</label>
+                                <input type="text" name="nombre" id="nombre" placeholder="Tu nombre" required autocomplete="name">
+                            </div>
+                            <div class="field">
+                                <label for="correo">Correo electrónico</label>
+                                <input type="email" name="correo" id="correo" placeholder="tu@correo.com" required autocomplete="email">
+                            </div>
+                            <div class="field full">
+                                <label for="telefono">Teléfono</label>
+                                <input type="tel" name="telefono" id="telefono" placeholder="55 5507 0734" inputmode="tel" autocomplete="tel" required>
+                            </div>
+                            <div class="field full">
+                                <label for="lugar_nacimiento">Lugar de nacimiento</label>
+                                <input type="text" name="lugar_nacimiento" id="lugar_nacimiento" placeholder="Ciudad o estado" required>
+                            </div>
+                            <div class="field full">
+                                <label for="fecha_nacimiento">Fecha de nacimiento</label>
+                                <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" required>
+                            </div>
+                            <div class="field full">
+                                <label for="asunto">Asunto</label>
+                                <input type="text" name="asunto" id="asunto" placeholder="Ej. Consulta sobre un producto" required>
+                            </div>
+                            <div class="field full">
+                                <label for="mensaje">Mensaje</label>
+                                <textarea name="mensaje" id="mensaje" placeholder="Escribe tu mensaje..." required></textarea>
+                            </div>
 
-    .flash { margin-top:12px; padding:10px 12px; border-radius:8px; display:none; }
-    .flash.success{ background:#ecf2ff; color:#0b3a80; border:1px solid #cfe0ff; display:block; }
-    .flash.error{ background:#fff1f2; color:#9f1239; border:1px solid #fecaca; display:block; }
+                            <input type="hidden" name="producto" id="producto-hidden" value="">
+                            <input type="hidden" name="precio" id="precio-hidden" value="">
 
-    /* Responsive */
-    @media (max-width:720px){
-      form#contact-form{ grid-template-columns: 1fr; }
-      .contact-section{ padding:18px; margin:18px; }
-    }
+                            <div class="form-actions">
+                                <button type="submit" class="btn-send">Enviar mensaje</button>
+                            </div>
+                            <div id="flash-messages" class="full"></div>
+                        </form>
+                    </section>
+                </div>
+            </section>
+        </main>
+        <footer class="footer">
+            <p>© 2026 RedNatura · Estamos para ayudarte</p>
+        </footer>
 
-    /* Pequeños estilos para enlaces dentro del flash */
-    .flash a{ color:var(--blue-600); text-decoration:underline; }
+        <!-- Keep existing contacto.js to prefill producto/precio and improve UX -->
+        <script src="js/contacto.js"></script>
+        <script>
+            // Submit the form via Formsubmit AJAX and stay on the same page
+            (function () {
+                const form = document.getElementById('contact-form');
+                const flash = document.getElementById('flash-messages');
 
-    /* resaltado del producto preseleccionado */
-    .prefill-box{ background:#f0f7ff; border:1px solid #dbeeff; padding:10px 12px; border-radius:8px; color:#0b3a80; font-weight:700; }
-  </style>
-</head>
-<body>
+                function showFlash(html, type = 'success') {
+                    flash.innerHTML = `<div class="flash ${type}">${html}</div>`;
+                }
 
-  <main class="contact-section" role="main" aria-labelledby="contact-title">
-    <header>
-      <h2 id="contact-title">Contacto</h2>
-      <p class="lead">¿Tienes dudas o deseas realizar un pedido? Completa el formulario y nos pondremos en contacto.</p>
-    </header>
+                if (!form) return;
 
-    <!-- Netlify form: name + data-netlify attribute -->
-    <form id="contact-form" name="contact" method="POST" data-netlify="true" action="/contacto.html?success=1" aria-label="Formulario de contacto">
-      <input type="hidden" name="form-name" value="contact">
-      <!-- Campos -->
-      <input type="text" name="nombre" id="nombre" placeholder="Nombre completo" required autocomplete="name">
-      <input type="email" name="correo" id="correo" placeholder="Correo electrónico" required autocomplete="email">
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    if (submitBtn) submitBtn.disabled = true;
 
-      <input class="full" type="tel" name="telefono" id="telefono" placeholder="Teléfono" inputmode="tel" autocomplete="tel" required>
-      <input class="full" type="text" name="lugar_nacimiento" id="lugar_nacimiento" placeholder="Lugar de nacimiento" required>
+                    const data = new FormData(form);
+                    // Include honeypot check value in payload if present
+                    if (form.querySelector('input[name="bot-field"]') && form.querySelector('input[name="bot-field"]').value) {
+                        // suspected bot — silently return
+                        if (submitBtn) submitBtn.disabled = false;
+                        return;
+                    }
 
-      <input class="full" type="date" name="fecha_nacimiento" id="fecha_nacimiento" placeholder="Fecha de nacimiento" required>
+                    const body = new URLSearchParams();
+                    for (const pair of data.entries()) body.append(pair[0], pair[1]);
 
-      <input class="full" type="text" name="asunto" id="asunto" placeholder="Asunto (ej. Consulta sobre PROBI GO!)" required>
-
-      <textarea class="full" name="mensaje" id="mensaje" placeholder="Escribe tu mensaje..." required></textarea>
-
-      <!-- campo oculto para producto preseleccionado y precio -->
-      <input type="hidden" name="producto" id="producto-hidden" value="">
-      <input type="hidden" name="precio" id="precio-hidden" value="">
-
-      <div class="full" style="display:flex; gap:10px; align-items:center; justify-content:space-between;">
-        <div style="display:flex; gap:8px; align-items:center;">
-          <!-- removed consent checkbox as requested -->
-        </div>
-
-        <button type="submit" class="btn-send" aria-label="Enviar mensaje">Enviar mensaje</button>
-      </div>
-
-      <div id="flash-messages" class="full"></div>
-    </form>
-
-    <div id="prefill-display" style="margin-top:14px"></div>
-
-    <div class="contact-meta" aria-hidden="false" style="margin-top:16px;">
-      <div>📞 <strong>Tel:</strong> <a href="tel:+52-5555070734">5555070734</a></div>
-      <div>✉️ <strong>Email:</strong> <a href="mailto:fabiola250204@gmail.com">fabiola250204@gmail.com</a></div>
-      <div><a class="btn-whatsapp" href="https://wa.me/525555070734?text=Hola%20RedNatura,%20quiero%20informaci%C3%B3n" target="_blank">💬 WhatsApp</a></div>
-    </div>
-  </main>
-
-  <script>
-    // Muestra mensaje flash si la URL contiene ?success=1
-    const flash = document.getElementById('flash-messages');
-    function showFlashHtml(html, type='success'){
-      flash.innerHTML = `<div class="flash ${type}">${html}</div>`;
-    }
-
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('success') === '1'){
-      showFlashHtml('¡Mensaje enviado! Gracias, te contactaremos pronto.', 'success');
-      if (history.replaceState) {
-        const url = new URL(window.location);
-        url.searchParams.delete('success');
-        history.replaceState({}, document.title, url.pathname + url.search);
-      }
-    }
-
-    // Prefill desde query params cuando venimos desde producto
-    document.addEventListener('DOMContentLoaded', () => {
-      const params = new URLSearchParams(window.location.search);
-      const producto = params.get('producto');
-      const precio = params.get('precio');
-
-      if (producto) {
-        const prefill = document.getElementById('producto-hidden');
-        if (prefill) prefill.value = producto;
-
-        const precioHidden = document.getElementById('precio-hidden');
-        if (precioHidden && precio) precioHidden.value = precio;
-
-        const caja = document.getElementById('prefill-display');
-        caja.innerHTML = `<div class="prefill-box">Interesado en: ${producto}${precio? ' — ' + precio : ''}</div>`;
-      }
-
-      // si queremos pre‑llenar asunto y mensaje
-      const asuntoInput = document.getElementById('asunto');
-      const mensajeTextarea = document.getElementById('mensaje');
-      if (producto && asuntoInput) asuntoInput.value = `Consulta / Pedido: ${producto}`;
-      if (producto && mensajeTextarea) mensajeTextarea.value = `Hola, estoy interesada/o en el producto: ${producto}\nPrecio: ${params.get('precio') || ''}\nPor favor contáctenme.`;
-    });
-
-    // No JS submit handler: allow native POST to Netlify (fallback removed as requested)
-  </script>
-
-  <noscript>
-    <div style="max-width:920px;margin:20px auto;padding:12px;background:#fff9e6;border-radius:8px;border:1px solid #f5e1a4;">
-      Para enviar el formulario, asegúrate de que JavaScript esté habilitado o utiliza el correo: <a href="mailto:fabiola250204@gmail.com">fabiola250204@gmail.com</a>
-    </div>
-  </noscript>
-</body>
+                    fetch(form.action, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: body.toString()
+                    }).then(res => res.json()).then(json => {
+                        // Formsubmit returns JSON when using /ajax/
+                        showFlash('¡Mensaje enviado! Gracias, te contactaremos pronto.', 'success');
+                        form.reset();
+                        // clear prefill display
+                        const prefill = document.getElementById('prefill-display'); if (prefill) prefill.innerHTML = '';
+                        if (submitBtn) setTimeout(() => submitBtn.disabled = false, 2000);
+                    }).catch(err => {
+                        console.error('Formsubmit error', err);
+                        showFlash('Ocurrió un error al enviar. Intenta de nuevo más tarde.', 'error');
+                        if (submitBtn) submitBtn.disabled = false;
+                    });
+                });
+            })();
+        </script>
+    </body>
 </html>
