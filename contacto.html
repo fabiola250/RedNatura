@@ -8,12 +8,12 @@
 <body>
   <nav class="navbar" aria-label="Navegación principal"><div class="container">
     <a class="logo" href="index.html"><img src="img/logo.png" alt="" class="logo-img"><span><span class="logo-text">RedNatura</span><span class="brand-note">Bienestar natural</span></span></a>
-    <ul class="nav-links"><li><a href="index.html">Inicio</a></li><li><a href="index.html#productos">Productos</a></li><li><a href="sucursales.html">Sucursales</a></li><li><a href="contacto.html" aria-current="page">Contacto</a></li></ul>
+    <ul class="nav-links"><li><a href="index.html">Inicio</a></li><li><a href="index.html#productos">Productos</a></li><li><a href="sucursales.html">Sucursales</a></li><li><a href="contacto.html" class="active">Contacto</a></li><li><a href="#" onclick="toggleChat();return false;" class="help-link">Asesoría</a></li></ul>
   </div></nav>
   <main>
-    <section class="page-hero"><div class="container"><span class="hero-kicker">Estamos para escucharte</span><h1>Conversemos sobre tu bienestar.</h1><p>Déjanos tus datos y cuéntanos qué necesitas. Te contactamos para orientarte sobre productos, precios o sucursales.</p></div></section>
+    <section class="page-hero"><div class="container"><span class="hero-kicker">Estamos para escucharte</span><h1>Conversemos sobre tu bienestar.</h1><p>Déjanos tus datos y cuéntanos qué necesitas. Responderemos con asesoría clara y cercana.</p></div></section>
     <section class="contact-page"><div class="container contact-layout">
-      <aside class="contact-aside"><span class="sales-card-label">Atención directa</span><h2>Una respuesta clara y cercana.</h2><p>Elige el canal que prefieras. Nuestro equipo te ayuda a resolver tus dudas sin complicaciones.</p>
+      <aside class="contact-aside"><span class="sales-card-label">Atención directa</span><h2>Una respuesta clara y cercana.</h2><p>Elige el canal que prefieras. Nuestro equipo te ayuda a resolver dudas sobre productos, compra informada y asesoría personalizada.</p>
         <a class="contact-method" href="https://wa.me/525555070734?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20RedNatura" target="_blank" rel="noopener"><strong>WhatsApp</strong><small>55 5507 0734 · Respuesta directa</small></a>
         <a class="contact-method" href="mailto:fabiola250204@gmail.com"><strong>Correo electrónico</strong><small>fabiola250204@gmail.com</small></a>
         <a class="contact-method" href="sucursales.html"><strong>Visita una sucursal</strong><small>Consulta nuestro directorio nacional</small></a>
@@ -21,7 +21,7 @@
       <section class="contact-form-card" aria-labelledby="contact-title"><h2 id="contact-title">Cuéntanos cómo ayudarte.</h2><p class="lead">Completa el formulario y te contactaremos lo antes posible.</p>
         <div id="prefill-display"></div>
 
-        <form id="contact-form" method="POST" action="https://formsubmit.co/el/kuguce" aria-label="Formulario de contacto">
+        <form id="contact-form" method="POST" action="https://formsubmit.co/fabiola250204@gmail.com" aria-label="Formulario de contacto">
           <input type="text" name="_honey" class="form-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
           <input type="hidden" name="_subject" value="Nuevo mensaje desde web RedNatura">
           <input type="hidden" name="_template" value="table">
@@ -45,8 +45,13 @@
     </div></section>
   </main>
   <footer class="footer"><p>© 2026 RedNatura · Estamos para ayudarte</p></footer>
+  <div id="chatbot" class="chatbot-container hidden"><div class="chatbot-header"><h3>Asistente RedNatura</h3><button class="close-btn" onclick="toggleChat()" aria-label="Cerrar chat">×</button></div><div id="chat-messages" class="chat-messages"></div><div class="chat-input-area"><input id="chat-input" type="text" placeholder="Escribe tu pregunta..." onkeypress="handleChatInput(event)"><button onclick="sendMessage()">Enviar</button></div></div>
+  <button class="chat-toggle" onclick="toggleChat()" aria-label="Abrir chat"><span aria-hidden="true">💬</span><span class="chat-toggle-label">¿Necesitas ayuda?</span></button>
 
+  <script src="js/productos.js"></script>
+  <script src="js/sucursales.js"></script>
   <script src="js/contacto.js"></script>
+  <script src="js/chatbot.js"></script>
   <script src="js/navigation.js"></script>
 </body>
 </html>
