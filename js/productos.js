@@ -661,7 +661,7 @@ const productos = [
       "Favorece energía masculina","Apoya rendimiento físico",
       "Fortalece defensas","Favorece equilibrio hormonal","Apoya vitalidad diaria"
     ],
-    modoUso: "Tomar 1 cápsula al día",
+    modoUso: "Tomar 2 cápsulas al día (1 mañana, 1 noche)",
     descripcionCorta: "💪 Energía y vitalidad para hombres",
     descripcionLarga: "FLUSSORIN es un suplemento diseñado para hombres que buscan energía, rendimiento físico y equilibrio hormonal. Con extractos naturales, vitaminas y minerales, fortalece defensas y apoya la vitalidad diaria."
   },
