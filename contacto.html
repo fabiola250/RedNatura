@@ -21,17 +21,15 @@
       <section class="contact-form-card" aria-labelledby="contact-title"><h2 id="contact-title">Cuéntanos cómo ayudarte.</h2><p class="lead">Completa el formulario y te contactaremos lo antes posible.</p>
         <div id="prefill-display"></div>
 
-        <!-- Formsubmit native POST using hidden iframe target to keep user on the same page.
-             This avoids CORS/JS/AJAX issues on GitHub Pages while still submitting to Formsubmit.
-        -->
-        <form id="contact-form" method="POST" action="https://formsubmit.co/fabiola250204@gmail.com" target="formtarget" aria-label="Formulario de contacto">
+        <!-- Simple native POST to Formsubmit (like the example) -->
+        <form id="contact-form" method="POST" action="https://formsubmit.co/fabiola250204@gmail.com" aria-label="Formulario de contacto">
           <!-- Honeypot for bots -->
           <p hidden><label>No llenar: <input name="bot-field"></label></p>
 
           <!-- Formsubmit settings -->
           <input type="hidden" name="_captcha" value="false">
           <input type="hidden" name="_subject" value="Nuevo mensaje desde web RedNatura">
-          <!-- _next will redirect the iframe; we detect iframe load to show success on parent page -->
+          <!-- Redirect back to this page with a success flag -->
           <input type="hidden" name="_next" value="https://fabiola250.github.io/RedNatura/contacto.html?success=1">
 
           <div class="field"><label for="nombre">Nombre completo</label><input type="text" name="nombre" id="nombre" placeholder="Tu nombre" required autocomplete="name"></div>
@@ -49,75 +47,26 @@
           <div id="flash-messages" class="full"></div>
         </form>
 
-        <!-- Hidden iframe target for native form POST -->
-        <iframe name="formtarget" id="formtarget" style="display:none;"></iframe>
-
       </section>
     </div></section>
   </main>
   <footer class="footer"><p>© 2026 RedNatura · Estamos para ayudarte</p></footer>
 
-  <!-- Include prefill helper if present; harmless if file missing -->
+  <!-- Include prefill helper -->
   <script src="js/contacto.js"></script>
 
   <script>
-    // Fallback: detect iframe load after native form POST (Formsubmit will load the _next page in the iframe)
+    // Show success flash if redirected with ?success=1
     (function(){
-      const form = document.getElementById('contact-form');
       const flash = document.getElementById('flash-messages');
-      const iframe = document.getElementById('formtarget');
-      let iframeTimer = null;
-
       function showFlash(html, type='success'){
-        if(!flash) return;
-        flash.innerHTML = `<div class="flash ${type}">${html}</div>`;
+        if(!flash) return; flash.innerHTML = `<div class="flash ${type}">${html}</div>`;
       }
-
-      // If URL has ?success=1 (redirected), show message
-      if(window.location.search.indexOf('success=1') !== -1){
+      const params = new URLSearchParams(window.location.search);
+      if(params.get('success') === '1'){
         showFlash('¡Mensaje enviado! Gracias, te contactaremos pronto.', 'success');
-        // remove query param from URL
-        if(history.replaceState){
-          const url = new URL(window.location);
-          url.searchParams.delete('success');
-          history.replaceState({}, document.title, url.pathname + url.search);
-        }
+        if(history.replaceState){ const url = new URL(window.location); url.searchParams.delete('success'); history.replaceState({}, document.title, url.pathname + url.search); }
       }
-
-      if(!form || !iframe) return;
-
-      // When iframe finishes loading, assume submission completed and show message
-      iframe.addEventListener('load', function(){
-        // ignore the initial blank load
-        try{
-          const iframeLoc = iframe.contentWindow.location.href;
-          // If iframe loaded something different than 'about:blank', assume success
-          if(iframeLoc && iframeLoc !== 'about:blank'){
-            clearTimeout(iframeTimer);
-            console.log('Iframe loaded:', iframeLoc);
-            showFlash('¡Mensaje enviado! Gracias, te contactaremos pronto.', 'success');
-            form.reset();
-            const prefill = document.getElementById('prefill-display'); if(prefill) prefill.innerHTML = '';
-          }
-        }catch(e){
-          // cross-origin may block reading iframe location; still show success as fallback
-          clearTimeout(iframeTimer);
-          console.log('Iframe load (cross-origin)');
-          showFlash('¡Mensaje enviado! Gracias, te contactaremos pronto.', 'success');
-          form.reset();
-          const prefill = document.getElementById('prefill-display'); if(prefill) prefill.innerHTML = '';
-        }
-      });
-
-      // Show sending state and set timeout to detect failure
-      form.addEventListener('submit', function(){
-        showFlash('Enviando mensaje…', 'info');
-        // set a timeout: if iframe doesn't load within 12s assume problem
-        iframeTimer = setTimeout(function(){
-          showFlash('No se recibió respuesta del servidor. Verifica tu conexión o intenta de nuevo.', 'error');
-        }, 12000);
-      });
-
     })();
   </script>
 </body>
