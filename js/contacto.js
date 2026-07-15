@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('mensaje').value = `Hola, estoy interesado/a en ${producto}${precio ? ` con precio de ${precio}` : ''}. Por favor contáctenme.`;
   }
 
-  form?.addEventListener('submit', (event) => {
+  form?.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     if (!form.reportValidity()) return;
@@ -57,11 +57,35 @@ document.addEventListener('DOMContentLoaded', () => {
     label.textContent = 'Enviando mensaje…';
     flash?.replaceChildren();
 
-    showStatus('success', '¡Mensaje enviado!', 'Gracias por escribirnos. Te contactaremos lo antes posible.');
+    try {
+      const formData = new FormData(form);
+      const data = new URLSearchParams(formData);
+      
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
 
-    // Enviar el formulario de manera tradicional con FormSubmit
-    setTimeout(() => {
-      form.submit();
-    }, 800);
+      const json = await response.json();
+
+      if (!response.ok) {
+        throw new Error('No se pudo enviar el formulario');
+      }
+
+      showStatus('success', '¡Mensaje enviado!', 'Gracias por escribirnos. Te contactaremos lo antes posible.');
+      form.reset();
+      document.getElementById('prefill-display')?.replaceChildren();
+      
+    } catch (error) {
+      console.error('Error enviando el formulario:', error);
+      showStatus('error', 'Mensaje no enviado', 'No pudimos enviar tu mensaje. Intenta de nuevo o usa nuestro canal directo.');
+    } finally {
+      button.disabled = false;
+      button.classList.remove('is-sending');
+      label.textContent = originalLabel;
+    }
   });
 });
