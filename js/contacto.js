@@ -4,32 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const precio = params.get('precio');
   const form = document.getElementById('contact-form');
   const flash = document.getElementById('flash-messages');
-  const whatsappUrl = 'https://wa.me/525555070734?text=Hola%2C%20necesito%20ayuda%20con%20mi%20mensaje%20de%20contacto';
-
-  const showStatus = (type, title, message) => {
-    if (!flash) return;
-
-    flash.replaceChildren();
-    const notice = document.createElement('div');
-    const heading = document.createElement('strong');
-    const description = document.createElement('span');
-    notice.className = `flash ${type}`;
-    heading.textContent = title;
-    description.textContent = message;
-    notice.append(heading, description);
-
-    if (type === 'error') {
-      const whatsappLink = document.createElement('a');
-      whatsappLink.className = 'flash-whatsapp';
-      whatsappLink.href = whatsappUrl;
-      whatsappLink.target = '_blank';
-      whatsappLink.rel = 'noopener';
-      whatsappLink.textContent = 'Contáctanos por WhatsApp';
-      notice.append(whatsappLink);
-    }
-
-    flash.append(notice);
-  };
 
   if (producto) {
     document.getElementById('producto-hidden').value = producto;
@@ -57,11 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
     label.textContent = 'Enviando mensaje…';
     flash?.replaceChildren();
 
-    showStatus('success', '¡Mensaje enviado!', 'Gracias por escribirnos. Te contactaremos lo antes posible.');
-
-    // Enviar el formulario de manera tradicional con FormSubmit
+    // Enviar el formulario sin mostrar mensaje de éxito
+    // El mensaje de éxito se mostrará en gracias.html
     setTimeout(() => {
       form.submit();
-    }, 1500);
+    }, 500);
   });
 });
