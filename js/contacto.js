@@ -58,15 +58,13 @@ document.addEventListener('DOMContentLoaded', () => {
     flash?.replaceChildren();
 
     try {
-      const ajaxAction = form.action.replace('formsubmit.co/', 'formsubmit.co/ajax/');
-      const response = await fetch(ajaxAction, {
+      // Usar FormSubmit de manera directa
+      const response = await fetch(form.action, {
         method: 'POST',
-        headers: { Accept: 'application/json' },
         body: new FormData(form)
       });
-      const result = await response.json().catch(() => ({}));
 
-      if (!response.ok || result.success === false || result.success === 'false') {
+      if (!response.ok) {
         throw new Error('No se pudo enviar el formulario');
       }
 
