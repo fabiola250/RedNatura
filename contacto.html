@@ -66,6 +66,7 @@
       const form = document.getElementById('contact-form');
       const flash = document.getElementById('flash-messages');
       const iframe = document.getElementById('formtarget');
+      let iframeTimer = null;
 
       function showFlash(html, type='success'){
         if(!flash) return;
@@ -92,16 +93,29 @@
           const iframeLoc = iframe.contentWindow.location.href;
           // If iframe loaded something different than 'about:blank', assume success
           if(iframeLoc && iframeLoc !== 'about:blank'){
+            clearTimeout(iframeTimer);
+            console.log('Iframe loaded:', iframeLoc);
             showFlash('¡Mensaje enviado! Gracias, te contactaremos pronto.', 'success');
             form.reset();
             const prefill = document.getElementById('prefill-display'); if(prefill) prefill.innerHTML = '';
           }
         }catch(e){
           // cross-origin may block reading iframe location; still show success as fallback
+          clearTimeout(iframeTimer);
+          console.log('Iframe load (cross-origin)');
           showFlash('¡Mensaje enviado! Gracias, te contactaremos pronto.', 'success');
           form.reset();
           const prefill = document.getElementById('prefill-display'); if(prefill) prefill.innerHTML = '';
         }
+      });
+
+      // Show sending state and set timeout to detect failure
+      form.addEventListener('submit', function(){
+        showFlash('Enviando mensaje…', 'info');
+        // set a timeout: if iframe doesn't load within 12s assume problem
+        iframeTimer = setTimeout(function(){
+          showFlash('No se recibió respuesta del servidor. Verifica tu conexión o intenta de nuevo.', 'error');
+        }, 12000);
       });
 
     })();
