@@ -53,7 +53,8 @@
   <script src="js/contacto.js"></script>
 
   <script>
-    // Inline AJAX submit to Formsubmit (works on GitHub Pages). Keeps user on same page.
+    // Robust AJAX submit to Formsubmit (works on GitHub Pages).
+    // Improved handling: accepts non-JSON responses and logs errors for debugging.
     (function(){
       const form = document.getElementById('contact-form');
       const flash = document.getElementById('flash-messages');
@@ -64,6 +65,7 @@
       }
 
       if(!form) return;
+
       form.addEventListener('submit', function(e){
         e.preventDefault();
         const submitBtn = form.querySelector('button[type="submit"]');
@@ -71,20 +73,31 @@
 
         // honeypot
         const bot = form.querySelector('input[name="bot-field"]');
-        if(bot && bot.value){ if(submitBtn) submitBtn.disabled = false; return; }
+        if(bot && bot.value){ if(submitBtn) submitBtn.disabled = false; console.warn('Honeypot triggered'); return; }
 
         const data = new FormData(form);
         const body = new URLSearchParams();
         for(const pair of data.entries()) body.append(pair[0], pair[1]);
+
+        console.log('Sending form to', form.action, 'payload:', body.toString());
 
         fetch(form.action, {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: body.toString()
         }).then(res => {
-          if(!res.ok) throw new Error('Network response was not ok');
-          return res.json();
-        }).then(json => {
+          console.log('Fetch response status:', res.status, res.statusText);
+          if(!res.ok) throw new Error('Network response was not ok: ' + res.status);
+          return res.text();
+        }).then(text => {
+          // Formsubmit may return JSON or an empty body; treat any successful status as success
+          try {
+            const json = text ? JSON.parse(text) : {};
+            console.log('Formsubmit response JSON:', json);
+          } catch(err){
+            console.log('Formsubmit response text (non-JSON):', text);
+          }
+
           showFlash('¡Mensaje enviado! Gracias, te contactaremos pronto.', 'success');
           form.reset();
           const prefill = document.getElementById('prefill-display'); if(prefill) prefill.innerHTML = '';
