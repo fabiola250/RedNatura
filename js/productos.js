@@ -460,7 +460,7 @@ const productos = [
   {
     id: 26,
     nombre: "MUSH KAFFI",
-    precio: 805.50,
+    precio: 816,
     presentacion: "Bolsa con 225 g, sabor moka",
     categoria: "Energía",
     imagen: "img/mush_kaffi.png",
@@ -508,7 +508,7 @@ const productos = [
   {
     id: 29,
     nombre: "KAFICHAI",
-    precio: 769,
+    precio: 777,
     presentacion: "Bote con 400 g, sabor chai",
     categoria: "Energía",
     imagen: "img/kafichai.png",
