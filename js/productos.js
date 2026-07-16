@@ -424,7 +424,7 @@ const productos = [
   {
     id: 24,
     nombre: "RESVIV STICK PACK",
-    precio: 893,
+    precio: 906,
     presentacion: "Bolsa con 15 sobres de 8g",
     categoria: "Antioxidantes",
     imagen: "img/resviv_stick_pack.png",
