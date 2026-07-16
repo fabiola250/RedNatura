@@ -188,7 +188,7 @@ const productos = [
   {
     id: 11,
     nombre: "BLUNNER NF",
-    precio: 625,
+    precio: 790,
     presentacion: "Caja con 20 sobres de 4.3g",
     categoria: "Energía",
     imagen: "img/blunner_nf.png",
