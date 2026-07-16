@@ -248,7 +248,7 @@ const productos = [
   {
     id: 14,
     nombre: "OXIALOE NF",
-    precio: 802,
+    precio: 806,
     presentacion: "Frasco con 1 litro",
     categoria: "Desintoxicación",
     imagen: "img/oxialoe_nf.png",
