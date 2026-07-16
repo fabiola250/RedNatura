@@ -408,7 +408,7 @@ const productos = [
   {
     id: 23,
     nombre: "RESVIV NF",
-    precio: 896.50,
+    precio: 898,
     presentacion: "Frasco con 620 ml",
     categoria: "Antioxidantes",
     imagen: "img/resviv_nf.png",
