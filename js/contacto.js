@@ -4,6 +4,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const precio = params.get('precio');
   const form = document.getElementById('contact-form');
   const flash = document.getElementById('flash-messages');
+  const textarea = document.getElementById('mensaje');
+
+  // Mejorar accesibilidad del textarea en móvil
+  if (textarea) {
+    // Expandir textarea cuando tenga focus
+    textarea.addEventListener('focus', function() {
+      this.style.minHeight = '180px';
+      this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    
+    // Permitir auto-expansion mientras se escribe
+    textarea.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 400) + 'px';
+    });
+  }
 
   if (producto) {
     document.getElementById('producto-hidden').value = producto;
