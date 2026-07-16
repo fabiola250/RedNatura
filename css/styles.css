@@ -33,7 +33,7 @@ textarea{width:100%;resize:vertical;min-height:120px}@media(max-width:700px){tex
 .tarjeta-frame::before{display:none}.tarjeta-frame img{display:block;width:100%;height:100%;max-height:430px;object-fit:contain;border-radius:22px;filter:drop-shadow(0 18px 25px rgba(11,49,95,.2))[...]
 
 /* Navegación persistente, formulario y acceso al asistente */
-.navbar{transition:padding .25s ease,background .25s ease,box-shadow .25s ease}.navbar.is-scrolled{padding:7px 0;background:rgba(251,253,255,.96);box-shadow:0 10px 30px rgba(11,49,95,.1)}.navbar .[...]
+.navbar{transition:padding .25s ease,background .25s ease,box-shadow .25s ease}.navbar.is-scrolled{padding:7px 0;background:rgba(251,253,255,.96);box-shadow:0 10px 30px rgba(11,49,95,.1)}.navbar [...]
 .btn-send{min-width:170px}.btn-send:disabled{cursor:wait;opacity:.78;transform:none}.btn-send.is-sending::before{content:"";width:15px;height:15px;border:2px solid rgba(255,255,255,.45);border-top[...]
 .chat-toggle{width:64px;height:64px;border:3px solid rgba(255,255,255,.9);box-shadow:0 16px 34px rgba(21,87,155,.38);font-size:1.55rem;transition:transform .2s ease,box-shadow .2s ease}.chat-toggl[...]
 @keyframes send-spin{to{transform:rotate(360deg)}}@keyframes chat-pulse{0%{opacity:.7;transform:scale(.9)}75%,100%{opacity:0;transform:scale(1.25)}}
