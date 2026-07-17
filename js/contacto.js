@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('contact-form');
   const flash = document.getElementById('flash-messages');
   const textarea = document.getElementById('mensaje');
+  const redirectUrl = document.getElementById('redirect-url');
+
+  if (redirectUrl) redirectUrl.value = new URL('gracias.html', window.location.href).href;
 
   // Mejorar accesibilidad del textarea en móvil
   if (textarea) {
