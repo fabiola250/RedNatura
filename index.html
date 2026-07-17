@@ -52,31 +52,47 @@
       </div>
     </section>
 
+    <section class="category-explorer" aria-labelledby="categorias-title">
+      <div class="container">
+        <div class="section-heading">
+          <div><span class="section-kicker">Encuentra lo que buscas</span><h2 id="categorias-title">Explora nuestras categorías.</h2></div>
+          <p>Elige un objetivo de bienestar y te mostramos directamente los productos recomendados de esa categoría.</p>
+        </div>
+        <div class="category-grid" aria-label="Categorías de productos">
+          <button class="category-button" data-categoria="Digestión" aria-pressed="false" onclick="explorarCategoria('Digestión')"><span aria-hidden="true">01</span><strong>Digestión</strong><small>Equilibrio y confort diario</small></button>
+          <button class="category-button" data-categoria="Mental" aria-pressed="false" onclick="explorarCategoria('Mental')"><span aria-hidden="true">02</span><strong>Bienestar mental</strong><small>Descanso y enfoque</small></button>
+          <button class="category-button" data-categoria="Mujeres" aria-pressed="false" onclick="explorarCategoria('Mujeres')"><span aria-hidden="true">03</span><strong>Mujeres</strong><small>Cuidado en cada etapa</small></button>
+          <button class="category-button" data-categoria="Hombres" aria-pressed="false" onclick="explorarCategoria('Hombres')"><span aria-hidden="true">04</span><strong>Hombres</strong><small>Vitalidad y bienestar</small></button>
+          <button class="category-button" data-categoria="Energía" aria-pressed="false" onclick="explorarCategoria('Energía')"><span aria-hidden="true">05</span><strong>Energía</strong><small>Impulso para tu rutina</small></button>
+          <button class="category-button" data-categoria="Control de Peso" aria-pressed="false" onclick="explorarCategoria('Control de Peso')"><span aria-hidden="true">06</span><strong>Control de peso</strong><small>Acompaña tus hábitos</small></button>
+          <button class="category-button" data-categoria="Inmunológico" aria-pressed="false" onclick="explorarCategoria('Inmunológico')"><span aria-hidden="true">07</span><strong>Inmunológico</strong><small>Apoyo para tus defensas</small></button>
+          <button class="category-button" data-categoria="Belleza" aria-pressed="false" onclick="explorarCategoria('Belleza')"><span aria-hidden="true">08</span><strong>Belleza</strong><small>Cuidado desde adentro</small></button>
+          <button class="category-button" data-categoria="Desintoxicación" aria-pressed="false" onclick="explorarCategoria('Desintoxicación')"><span aria-hidden="true">09</span><strong>Desintoxicación</strong><small>Renueva tu rutina</small></button>
+          <button class="category-button" data-categoria="Niños" aria-pressed="false" onclick="explorarCategoria('Niños')"><span aria-hidden="true">10</span><strong>Niños</strong><small>Opciones para los pequeños</small></button>
+          <button class="category-button" data-categoria="Antioxidantes" aria-pressed="false" onclick="explorarCategoria('Antioxidantes')"><span aria-hidden="true">11</span><strong>Antioxidantes</strong><small>Protección y longevidad</small></button>
+          <button class="category-button" data-categoria="Articulaciones" aria-pressed="false" onclick="explorarCategoria('Articulaciones')"><span aria-hidden="true">12</span><strong>Articulaciones</strong><small>Movimiento y comodidad</small></button>
+          <button class="category-button" data-categoria="Circulación" aria-pressed="false" onclick="explorarCategoria('Circulación')"><span aria-hidden="true">13</span><strong>Circulación</strong><small>Bienestar cardiovascular</small></button>
+          <button class="category-button" data-categoria="Glucosa" aria-pressed="false" onclick="explorarCategoria('Glucosa')"><span aria-hidden="true">14</span><strong>Glucosa</strong><small>Acompañamiento metabólico</small></button>
+          <button class="category-button" data-categoria="Urinario" aria-pressed="false" onclick="explorarCategoria('Urinario')"><span aria-hidden="true">15</span><strong>Urinario</strong><small>Cuidado y confort</small></button>
+        </div>
+      </div>
+    </section>
+
     <section id="productos" class="productos">
       <div class="container">
         <div class="section-heading">
           <div><span class="section-kicker">Catálogo RedNatura</span><h2>Elige tu forma de sentirte bien.</h2></div>
           <p>Explora por categoría y descubre opciones para cada etapa de tu bienestar. Los precios finales y promociones siempre se muestran de forma visible.</p>
         </div>
-        <div class="filtros" aria-label="Filtrar productos por categoría">
-          <button class="filtro-btn active" onclick="filtrarProductos('todos', this)">Todos</button>
-          <button class="filtro-btn" onclick="filtrarProductos('Digestión', this)">Digestión</button>
-          <button class="filtro-btn" onclick="filtrarProductos('Mental', this)">Mental</button>
-          <button class="filtro-btn" onclick="filtrarProductos('Mujeres', this)">Mujeres</button>
-          <button class="filtro-btn" onclick="filtrarProductos('Hombres', this)">Hombres</button>
-          <button class="filtro-btn" onclick="filtrarProductos('Belleza', this)">Belleza</button>
-          <button class="filtro-btn" onclick="filtrarProductos('Inmunológico', this)">Inmunológico</button>
-          <button class="filtro-btn" onclick="filtrarProductos('Desintoxicación', this)">Desintoxicación</button>
-          <button class="filtro-btn" onclick="filtrarProductos('Control de Peso', this)">Control de peso</button>
-          <button class="filtro-btn" onclick="filtrarProductos('Energía', this)">Energía</button>
-          <button class="filtro-btn" onclick="filtrarProductos('Glucosa', this)">Glucosa</button>
-          <button class="filtro-btn" onclick="filtrarProductos('Niños', this)">Niños</button>
-          <button class="filtro-btn" onclick="filtrarProductos('Antioxidantes', this)">Antioxidantes</button>
-          <button class="filtro-btn" onclick="filtrarProductos('Articulaciones', this)">Articulaciones</button>
-          <button class="filtro-btn" onclick="filtrarProductos('Circulación', this)">Circulación</button>
-          <button class="filtro-btn" onclick="filtrarProductos('Urinario', this)">Urinario</button>
+        <div class="catalog-toolbar">
+          <label for="categoria-select">Filtrar el catálogo</label>
+          <select id="categoria-select" onchange="filtrarProductos(this.value)">
+            <option value="destacados">Recomendados</option><option value="todos">Todos</option><option value="Digestión">Digestión</option><option value="Mental">Bienestar mental</option><option value="Mujeres">Mujeres</option><option value="Hombres">Hombres</option><option value="Belleza">Belleza</option><option value="Inmunológico">Inmunológico</option><option value="Desintoxicación">Desintoxicación</option><option value="Control de Peso">Control de peso</option><option value="Energía">Energía</option><option value="Glucosa">Glucosa</option><option value="Niños">Niños</option><option value="Antioxidantes">Antioxidantes</option><option value="Articulaciones">Articulaciones</option><option value="Circulación">Circulación</option><option value="Urinario">Urinario</option>
+          </select>
+          <p id="catalogo-estado" class="catalog-status" role="status" aria-live="polite"></p>
         </div>
-        <div id="productos-grid" class="productos-grid" aria-live="polite"></div>
+        <div id="productos-grid" class="productos-grid"></div>
+        <div class="catalog-more"><button id="ver-todos-productos" class="cta-btn cta-secondary" type="button" onclick="mostrarTodosLosProductos()">Ver catálogo completo</button></div>
       </div>
     </section>
 
@@ -104,10 +120,12 @@
           <ul class="beneficios-list"><li>Orientación personalizada</li><li>Información clara</li><li>Atención por WhatsApp</li><li>Sucursales en México</li></ul>
           <button class="cta-btn cta-primary" onclick="toggleChat()">Hablar con el asistente</button>
         </div>
-        <figure class="conocenos-imagen tarjeta-frame">
-          <img src="img/tarjeta.png" alt="Tarjeta informativa de RedNatura" onerror="this.hidden=true; this.parentElement.classList.add('tarjeta-pendiente')">
-          <figcaption><strong>Espacio para tarjeta.png</strong><span>La imagen se mostrará aquí al agregarla en la carpeta img.</span></figcaption>
-        </figure>
+        <aside class="conocenos-imagen care-card" aria-label="Proceso de orientación RedNatura">
+          <span class="sales-card-label">Una elección acompañada</span>
+          <h3>Primero te escuchamos. Después te orientamos.</h3>
+          <ol><li><span>01</span>Cuéntanos qué objetivo de bienestar tienes.</li><li><span>02</span>Revisa opciones, presentaciones y precios claros.</li><li><span>03</span>Elige con apoyo por WhatsApp o en una sucursal.</li></ol>
+          <a href="contacto.html" class="cta-btn">Solicitar orientación <span aria-hidden="true">→</span></a>
+        </aside>
       </div>
     </section>
   </main>

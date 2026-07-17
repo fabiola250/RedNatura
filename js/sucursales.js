@@ -50,12 +50,30 @@ const estados = [
 ];
 
 // cargarSucursales(renderDedicado = false): si renderDedicado true, utiliza layout ancho
-function cargarSucursales(renderDedicado = false) {
+function cargarSucursales(renderDedicado = false, estadoSeleccionado = '') {
   const grid = document.getElementById('sucursales-grid');
   if (!grid) return;
   grid.innerHTML = '';
 
-  sucursales.forEach(sucursal => {
+  const selector = document.getElementById('estado-sucursal');
+  const estadoInicial = estadoSeleccionado || selector?.value || new URLSearchParams(window.location.search).get('estado') || 'CDMX';
+  if (selector && selector.options.length === 1) {
+    [...new Set(sucursales.map(sucursal => sucursal.estado))].sort((a, b) => a.localeCompare(b, 'es')).forEach(estado => {
+      const option = document.createElement('option');
+      option.value = estado;
+      option.textContent = estado;
+      selector.appendChild(option);
+    });
+  }
+  if (selector) selector.value = estadoInicial;
+
+  const sucursalesVisibles = estadoInicial ? encontrarSucursalesPorEstado(estadoInicial) : sucursales;
+  const estadoTitulo = document.getElementById('estado-seleccionado');
+  if (estadoTitulo) estadoTitulo.textContent = estadoInicial;
+  const estadoConteo = document.getElementById('sucursales-conteo');
+  if (estadoConteo) estadoConteo.textContent = `${sucursalesVisibles.length} ${sucursalesVisibles.length === 1 ? 'sucursal disponible' : 'sucursales disponibles'} en ${estadoInicial}.`;
+
+  sucursalesVisibles.forEach(sucursal => {
     const nombre = sucursal.nombre || 'Sucursal';
     const estado = sucursal.estado || 'Estado no especificado';
 
@@ -87,6 +105,13 @@ function cargarSucursales(renderDedicado = false) {
 
     grid.appendChild(card);
   });
+}
+
+function cambiarEstadoSucursal(estado) {
+  cargarSucursales(true, estado);
+  const url = new URL(window.location.href);
+  url.searchParams.set('estado', estado);
+  window.history.replaceState({}, '', url);
 }
 
 function encontrarSucursalesPorEstado(estado) {

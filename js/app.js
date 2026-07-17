@@ -10,15 +10,34 @@ function crearPlaceholderProducto(nombre) {
   return placeholder;
 }
 
-function filtrarProductos(filtro, boton = null) {
+const PRODUCTOS_INICIALES = 6;
+let filtroActual = 'destacados';
+let mostrarCatalogoCompleto = false;
+
+function actualizarControlesCatalogo(filtro) {
   document.querySelectorAll('.filtro-btn').forEach(btn => btn.classList.remove('active'));
-  if (boton) boton.classList.add('active');
+  document.querySelectorAll('[data-categoria]').forEach(btn => {
+    const activo = btn.dataset.categoria === filtro;
+    btn.classList.toggle('active', activo);
+    btn.setAttribute('aria-pressed', String(activo));
+  });
+
+  const select = document.getElementById('categoria-select');
+  if (select) select.value = filtro;
+}
+
+function filtrarProductos(filtro = 'destacados', boton = null, desplazar = false) {
+  filtroActual = filtro;
+  mostrarCatalogoCompleto = filtro !== 'destacados';
+  actualizarControlesCatalogo(filtro);
 
   const grid = document.getElementById('productos-grid');
   if (!grid) return;
   grid.innerHTML = '';
 
-  const productosFiltrados = filtro === 'todos'
+  const productosFiltrados = filtro === 'destacados'
+    ? productos.slice(0, PRODUCTOS_INICIALES)
+    : filtro === 'todos'
     ? productos
     : productos.filter(producto => producto.categoria?.toLowerCase() === filtro.toLowerCase());
 
@@ -60,6 +79,29 @@ function filtrarProductos(filtro, boton = null) {
     image.addEventListener('error', () => image.replaceWith(crearPlaceholderProducto(producto.nombre)), { once: true });
     grid.appendChild(card);
   });
+
+  const estado = document.getElementById('catalogo-estado');
+  if (estado) {
+    const etiqueta = filtro === 'destacados' ? 'productos recomendados' : filtro === 'todos' ? 'productos' : `productos de ${filtro}`;
+    estado.textContent = `${productosFiltrados.length} ${etiqueta} disponibles.`;
+  }
+
+  const verTodos = document.getElementById('ver-todos-productos');
+  if (verTodos) verTodos.hidden = filtro === 'todos';
+
+  if (desplazar) {
+    document.getElementById('productos')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    window.setTimeout(() => grid.querySelector('button, a')?.focus({ preventScroll: true }), 450);
+  }
+}
+
+function explorarCategoria(categoria) {
+  filtrarProductos(categoria, null, true);
+}
+
+function mostrarTodosLosProductos() {
+  mostrarCatalogoCompleto = true;
+  filtrarProductos('todos', null, false);
 }
 
 function verDescripcion(id) { window.location.href = `producto.html?id=${id}`; }
@@ -67,4 +109,7 @@ function generarImagen(nombre) {
   if (!nombre) return 'img/default.jpg';
   return `img/${nombre.toLowerCase().replace(/[^a-z0-9]+/gi, '-').replace(/-+$/, '')}.jpg`;
 }
-window.addEventListener('DOMContentLoaded', () => filtrarProductos('todos'));
+window.addEventListener('DOMContentLoaded', () => {
+  const categoriaUrl = new URLSearchParams(window.location.search).get('categoria');
+  filtrarProductos(categoriaUrl || 'destacados');
+});
