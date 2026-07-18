@@ -12,14 +12,14 @@ const paquetes = [
     nombre: 'Energía masculina',
     productos: ['FLUSSORIN', 'DUGRAN-X'],
     etiqueta: 'Vitalidad en pareja',
-    descripcion: 'Combina Flussorin y Dugran-X en una sola compra para acompañar objetivos de vitalidad y bienestar sexual masculino. Los suplementos no sustituyen una valoración médica ni están destinados a tratar disfunciones sexuales.',
+    descripcion: 'Combina Flussorin y Dugran-X en una sola compra para acompañar objetivos de vitalidad y bienestar sexual masculino. Para una mejor salud sexual.',
     precio: 932
   },
   {
     nombre: 'Bienestar femenino',
     productos: ['PLENNA', 'FEMICOL', 'FEMBALANZ'],
     etiqueta: 'Cuidado integral',
-    descripcion: 'Reúne Plenna, Femicol y Fembalanz para acompañar el bienestar femenino, el equilibrio diario y distintas etapas del ciclo menstrual. Este paquete no previene ni trata síndrome de ovario poliquístico, miomas o alteraciones menstruales; ante síntomas o antecedentes, consulta a un profesional de salud.',
+    descripcion: 'Reúne Plenna, Femicol y Fembalanz para acompañar el bienestar femenino, el equilibrio diario y distintas etapas del ciclo menstrual. Este paquete apoya a mejorar la salud femenina.',
     precio: 1305
   }
 ];
