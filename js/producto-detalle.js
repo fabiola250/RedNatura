@@ -44,8 +44,8 @@ function renderPaquete(paquete) {
         <span><small>Precio del paquete</small><strong>${formatMoneda(paquete.precio)}</strong></span>
       </div>
       <div class="bundle-actions">
-        <a class="btn btn-primary" href="contacto.html?producto=${encodeURIComponent(`Paquete ${paquete.nombre}: ${paquete.productos.join(' + ')}`)}&precio=${encodeURIComponent(formatMoneda(paquete.precio))}">Pedir información del paquete</a>
-        <a class="btn btn-outline" href="https://wa.me/525555070734?text=${consulta}" target="_blank" rel="noopener">Consultar por WhatsApp</a>
+        <a class="btn btn-primary" href="contacto.html?producto=${encodeURIComponent(`Paquete ${paquete.nombre}: ${paquete.productos.join(' + ')}`)}&precio=${encodeURIComponent(formatMoneda(paquete.precio))}">Solicita este paquete</a>
+        <a class="btn btn-outline" href="https://wa.me/525555070734?text=${consulta}" target="_blank" rel="noopener">Pregunta por WhatsApp</a>
       </div>
     </aside>`;
 }
@@ -55,35 +55,13 @@ function urlContactoProducto() {
   return `contacto.html?producto=${encodeURIComponent(producto.nombre)}&precio=${encodeURIComponent(formatMoneda(precio))}`;
 }
 
-function urlContactoPaquete(paquete) {
-  const contenido = `Paquete ${paquete.nombre}: ${paquete.productos.join(' + ')}`;
-  return `contacto.html?producto=${encodeURIComponent(contenido)}&precio=${encodeURIComponent(formatMoneda(paquete.precio))}`;
-}
+function configurarWhatsAppProducto(nombre, precio) {
+  const accesoWhatsApp = document.querySelector('[data-floating-whatsapp]');
+  if (!accesoWhatsApp) return;
 
-function abrirDecisionPaquete() {
-  const modal = document.getElementById('package-choice');
-  if (!modal) {
-    window.location.href = urlContactoProducto();
-    return;
-  }
-  modal.classList.remove('hidden');
-  document.body.classList.add('modal-open');
-  modal.querySelector('[data-package-accept]')?.focus();
-}
-
-function cerrarDecisionPaquete() {
-  document.getElementById('package-choice')?.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  document.querySelector('[data-product-request]')?.focus();
-}
-
-function elegirPaquete() {
-  const paquete = obtenerPaquete(producto);
-  window.location.href = paquete ? urlContactoPaquete(paquete) : urlContactoProducto();
-}
-
-function elegirSoloProducto() {
-  window.location.href = urlContactoProducto();
+  const mensaje = encodeURIComponent(`Hola, quiero solicitar ${nombre} por ${formatMoneda(precio)}. ¿Me pueden ayudar?`);
+  accesoWhatsApp.href = `https://wa.me/525555070734?text=${mensaje}`;
+  accesoWhatsApp.setAttribute('aria-label', `Preguntar por ${nombre} en WhatsApp`);
 }
 
 if (!producto) {
@@ -95,6 +73,7 @@ if (!producto) {
   const ahorro = precio - precioFinal;
   const paquete = obtenerPaquete(producto);
   document.title = `${producto.nombre} | RedNatura`;
+  configurarWhatsAppProducto(producto.nombre, precioFinal);
 
   detalle.innerHTML = `
     <div class="detail-layout">
@@ -116,9 +95,10 @@ if (!producto) {
           ${tieneDescuento ? `<span class="saving-pill">Ahorras ${formatMoneda(ahorro)}</span>` : ''}
         </div>
         <div class="detail-actions">
-          ${paquete ? '<button class="btn btn-primary" type="button" data-product-request onclick="abrirDecisionPaquete()">Pedir información</button>' : `<a class="btn btn-primary" href="${urlContactoProducto()}">Pedir información</a>`}
-          <a class="btn btn-outline" href="https://wa.me/525555070734?text=${encodeURIComponent(`Hola, estoy interesado en ${producto.nombre} por ${formatMoneda(precioFinal)}.`)}" target="_blank" rel="noopener">Consultar por WhatsApp</a>
+          <a class="btn btn-primary" href="${urlContactoProducto()}">Solicítalo ahora</a>
+          <a class="btn btn-outline" href="https://wa.me/525555070734?text=${encodeURIComponent(`Hola, quiero solicitar ${producto.nombre} por ${formatMoneda(precioFinal)}. ¿Me pueden ayudar?`)}" target="_blank" rel="noopener">Pregunta por WhatsApp</a>
         </div>
+        <p class="detail-action-note">Es fácil: envía tu solicitud y una persona te ayuda a continuar.</p>
         <div class="detail-sections">
           <section class="detail-card"><h2>Ingredientes</h2><ul class="detail-list">${producto.ingredientes.map(item => `<li>${item}</li>`).join('')}</ul></section>
           <section class="detail-card"><h2>Beneficios</h2><ul class="detail-list">${producto.beneficios.map(item => `<li>${item}</li>`).join('')}</ul></section>
@@ -126,19 +106,7 @@ if (!producto) {
         </div>
         ${renderPaquete(paquete)}
       </article>
-    </div>
-    ${paquete ? `<div id="package-choice" class="package-choice hidden" role="dialog" aria-modal="true" aria-labelledby="package-choice-title" aria-describedby="package-choice-description">
-      <div class="package-choice__panel">
-        <button class="package-choice__close" type="button" onclick="cerrarDecisionPaquete()" aria-label="Cerrar">×</button>
-        <span class="bundle-kicker">Antes de continuar</span>
-        <h2 id="package-choice-title">También puedes elegir el paquete “${paquete.nombre}”</h2>
-        <p id="package-choice-description">Incluye ${paquete.productos.join(', ')} por <strong>${formatMoneda(paquete.precio)}</strong>. ¿Deseas pedir información del paquete completo?</p>
-        <div class="package-choice__actions">
-          <button class="btn btn-primary" type="button" data-package-accept onclick="elegirPaquete()">Aceptar paquete</button>
-          <button class="btn btn-outline" type="button" onclick="elegirSoloProducto()">Rechazar y continuar solo con ${producto.nombre}</button>
-        </div>
-      </div>
-    </div>` : ''}`;
+    </div>`;
 
   const image = detalle.querySelector('.detail-image');
   image.addEventListener('error', () => {
@@ -147,12 +115,4 @@ if (!producto) {
     placeholder.textContent = producto.nombre;
     image.replaceWith(placeholder);
   }, { once: true });
-
-  document.getElementById('package-choice')?.addEventListener('click', event => {
-    if (event.target.id === 'package-choice') cerrarDecisionPaquete();
-  });
-
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && !document.getElementById('package-choice')?.classList.contains('hidden')) cerrarDecisionPaquete();
-  });
 }
